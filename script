@@ -16,7 +16,7 @@ if game.PlaceId == 96063223159256 then
     })
 
     local Tabs = {
-        Main = Window:AddTab({ Title = "Main Tab", Icon = "" }),
+        Main = Window:AddTab({ Title = "Grip Tab", Icon = "" }),
         Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
     }
 
@@ -48,7 +48,7 @@ if game.PlaceId == 96063223159256 then
     end
 
     local gripLoopRunning = false
-    local AutoGripToggle = Tabs.Main:AddToggle("Spam Grip Toggle", {Title = "Spam Grip Kill (Toggle)", Default = false, Description = "Spams grips on nearest NPC (It does it 20 times per click, so it gives you 1.2k per grip 4 times)"})
+    local AutoGripToggle = Tabs.Main:AddToggle("AutoGripToggle", {Title = "Auto Grip Kill (Toggle)", Default = false, Description = "Spams kill on nearest NPC"})
 
     AutoGripToggle:OnChanged(function()
         gripLoopRunning = Options.AutoGripToggle.Value
