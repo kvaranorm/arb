@@ -4,7 +4,6 @@ if game.PlaceId == 96063223159256 then
     local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
     local currentVersion = "ARB: Script v1 (Testing)"
 
-
     local Window = Fluent:CreateWindow({
         Title = currentVersion,
         SubTitle = "by xyro",
@@ -71,6 +70,27 @@ if game.PlaceId == 96063223159256 then
                 end
 
                 wait()
+            end
+        end)
+    end)
+
+    local meditateLoopRunning = false
+    local AutoMeditateToggle = Tabs.Main:AddToggle("AutoMeditateToggle", {Title = "Auto Meditate (Toggle)", Default = false, Description = "Starts meditation and spams create key"})
+
+    AutoMeditateToggle:OnChanged(function()
+        meditateLoopRunning = Options.AutoMeditateToggle.Value
+        task.spawn(function()
+            while meditateLoopRunning do
+                local meditateArgs = { "Start" }
+                game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("Meditate"):FireServer(unpack(meditateArgs))
+
+                for _ = 1, 5 do
+                    local createKeyArgs = { "Complete" }
+                    game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("Create Key"):FireServer(unpack(createKeyArgs))
+                    task.wait(0.1)
+                end
+
+                wait(1.5)
             end
         end)
     end)
