@@ -15,7 +15,7 @@ if game.PlaceId == 96063223159256 then
     })
 
     local Tabs = {
-        Main = Window:AddTab({ Title = "Grip Tab", Icon = "" }),
+        Main = Window:AddTab({ Title = "Main Tab", Icon = "" }),
         Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
     }
 
