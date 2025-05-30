@@ -15,14 +15,39 @@ if game.PlaceId == 96063223159256 then
     })
 
     local Tabs = {
-        Main = Window:AddTab({ Title = "Main Tab", Icon = "" }),
+        Main = Window:AddTab({ Title = "Grip Tab", Icon = "" }),
         Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
     }
 
     local Options = Fluent.Options
 
+    local function getClosestNPC()
+        local player = game:GetService("Players").LocalPlayer
+        local char = player.Character
+        local hrp = char and char:FindFirstChild("HumanoidRootPart")
+        if not hrp then return nil end
+
+        local lives = workspace:FindFirstChild("Lives")
+        if not lives then return nil end
+
+        local closest = nil
+        local shortestDist = math.huge
+
+        for _, npc in ipairs(lives:GetChildren()) do
+            if npc.Name == "RegularNationNpc" and npc:FindFirstChild("HumanoidRootPart") then
+                local dist = (npc.HumanoidRootPart.Position - hrp.Position).Magnitude
+                if dist < shortestDist then
+                    closest = npc
+                    shortestDist = dist
+                end
+            end
+        end
+
+        return closest
+    end
+
     local gripLoopRunning = false
-    local AutoGripToggle = Tabs.Main:AddToggle("AutoGripToggle", {Title = "Spam Grip (Toggle)", Default = false, Description = "Spams grip to farm 5k yuanz per npc"})
+    local AutoGripToggle = Tabs.Main:AddToggle("AutoGripToggle", {Title = "Auto Grip Npcs (Toggle)", Default = false, Description = "Spam grips on nearest NPC"})
 
     AutoGripToggle:OnChanged(function()
         gripLoopRunning = Options.AutoGripToggle.Value
@@ -30,13 +55,14 @@ if game.PlaceId == 96063223159256 then
             while gripLoopRunning do
                 local player = game:GetService("Players").LocalPlayer
                 local char = player.Character
-                local pos = char and char:FindFirstChild("HumanoidRootPart") and char.HumanoidRootPart.Position
+                local pos = char and char:FindFirstChild("HumanoidRootPart") and char.HumanoidRootPart.Position or nil
+                local target = getClosestNPC()
 
-                if char and pos then
+                if target and pos then
                     for _ = 1, 20 do
                         local args = {
                             "Kill",
-                            nil,
+                            target,
                             pos + Vector3.new(1, 2, 0)
                         }
                         char.Scripts.Server.Grip.Event:FireServer(unpack(args))
@@ -48,13 +74,68 @@ if game.PlaceId == 96063223159256 then
         end)
     end)
 
+    local playerGripLoopRunning = false
+    local whitelist = {
+        ["YourUserName1"] = true,
+        ["YourUserName2"] = true
+    }
+
+    local AutoGripPlayersToggle = Tabs.Main:AddToggle("AutoGripPlayersToggle", {
+        Title = "Auto Grip Players (Toggle)",
+        Default = false,
+        Description = "Spam grips on players within 20 studs (excluding whitelist)"
+    })
+
+    AutoGripPlayersToggle:OnChanged(function()
+        playerGripLoopRunning = Options.AutoGripPlayersToggle.Value
+        task.spawn(function()
+            while playerGripLoopRunning do
+                local Players = game:GetService("Players")
+                local localPlayer = Players.LocalPlayer
+                local char = localPlayer.Character
+                local hrp = char and char:FindFirstChild("HumanoidRootPart")
+                if not hrp then
+                    task.wait(0.5)
+                    continue
+                end
+
+                for _, plr in ipairs(Players:GetPlayers()) do
+                    if
+                        plr ~= localPlayer and
+                        not whitelist[plr.Name] and
+                        plr.Character and
+                        plr.Character:FindFirstChild("HumanoidRootPart")
+                    then
+                        local targetHRP = plr.Character.HumanoidRootPart
+                        local dist = (targetHRP.Position - hrp.Position).Magnitude
+                        if dist <= 20 then
+                            for _ = 1, 20 do
+                                local args = {
+                                    "Kill",
+                                    plr.Character,
+                                    hrp.Position + Vector3.new(1, 2, 0)
+                                }
+                                char.Scripts.Server.Grip.Event:FireServer(unpack(args))
+                            end
+                        end
+                    end
+                end
+
+                task.wait()
+            end
+        end)
+    end)
+
     local meditateLoopRunning = false
-    local AutoMeditateToggle = Tabs.Main:AddToggle("AutoMeditateToggle", {Title = "Auto Meditate (Toggle)", Default = false, Description = "Spams the meditate keys to auto meditate (!! DISCLAIMER !! THIS AUTO MEDITATE ONLY WORKS WHEN YOU GET ON A MEDITATION MAT AND CLICK START)"})
+    local AutoMeditateToggle = Tabs.Main:AddToggle("AutoMeditateToggle", {Title = "Auto Meditate (Toggle)", Default = false, Description = "Starts meditation and spams create key"})
 
     AutoMeditateToggle:OnChanged(function()
         meditateLoopRunning = Options.AutoMeditateToggle.Value
         task.spawn(function()
             while meditateLoopRunning do
+                local meditateArgs = { "Start" }
+                game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("Meditate"):FireServer(unpack(meditateArgs))
+
                 for _ = 1, 5 do
                     local createKeyArgs = { "Complete" }
                     game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("Create Key"):FireServer(unpack(createKeyArgs))
