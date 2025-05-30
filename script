@@ -22,11 +22,7 @@ if game.PlaceId == 96063223159256 then
     local Options = Fluent.Options
 
     local gripLoopRunning = false
-    local AutoGripToggle = Tabs.Main:AddToggle("AutoGripToggle", {
-        Title = "Spam Grip (Toggle)",
-        Default = false,
-        Description = "Spams grip to farm 5k yuanz per npc"
-    })
+    local AutoGripToggle = Tabs.Main:AddToggle("AutoGripToggle", {Title = "Spam Grip (Toggle)", Default = false, Description = "Spams grip to farm 5k yuanz per npc"})
 
     AutoGripToggle:OnChanged(function()
         gripLoopRunning = Options.AutoGripToggle.Value
@@ -53,30 +49,21 @@ if game.PlaceId == 96063223159256 then
     end)
 
     local meditateLoopRunning = false
-    local AutoMeditateToggle = Tabs.Main:AddToggle("AutoMeditateToggle", {
-        Title = "Auto Meditate (Toggle)",
-        Default = false,
-        Description = "Spams the meditate keys to auto meditate"
-    })
+    local AutoMeditateToggle = Tabs.Main:AddToggle("AutoMeditateToggle", {Title = "Auto Meditate (Toggle)", Default = false, Description = "Spams the meditate keys to auto meditate"})
 
     AutoMeditateToggle:OnChanged(function()
         meditateLoopRunning = Options.AutoMeditateToggle.Value
-
-        if meditateLoopRunning then
-            local meditateArgs = { "Start" }
-            game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("Meditate"):FireServer(unpack(meditateArgs))
-
-            task.spawn(function()
-                while meditateLoopRunning do
-                    for _ = 1, 5 do
-                        local createKeyArgs = { "Complete" }
-                        game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("Create Key"):FireServer(unpack(createKeyArgs))
-                        task.wait(0.1)
-                    end
-                    wait(1.5)
+        task.spawn(function()
+            while meditateLoopRunning do
+                for _ = 1, 5 do
+                    local createKeyArgs = { "Complete" }
+                    game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("Create Key"):FireServer(unpack(createKeyArgs))
+                    task.wait(0.1)
                 end
-            end)
-        end
+
+                wait(1.5)
+            end
+        end)
     end)
 
     SaveManager:SetLibrary(Fluent)
