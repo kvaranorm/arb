@@ -117,7 +117,7 @@ if game.PlaceId == 96063223159256 then
                         local targetHRP = plr.Character.HumanoidRootPart
                         local dist = (targetHRP.Position - hrp.Position).Magnitude
                         if dist <= 20 then
-                            for _ = 1, 20 do
+                            while true do
                                 local args = {
                                     "Kill",
                                     plr.Character,
