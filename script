@@ -84,7 +84,7 @@ if game.PlaceId == 96063223159256 then
     local playerGripLoopRunning = false
     local whitelist = {
         ["KINcAgU"] = true,
-        ["whateversance"] = true
+        [""] = true
     }
 
     local AutoGripPlayersToggle = Tabs.Main:AddToggle("AutoGripPlayersToggle", {
