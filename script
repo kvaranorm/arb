@@ -15,39 +15,14 @@ if game.PlaceId == 96063223159256 then
     })
 
     local Tabs = {
-        Main = Window:AddTab({ Title = "Grip Tab", Icon = "" }),
+        Main = Window:AddTab({ Title = "Main Tab", Icon = "" }),
         Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
     }
 
     local Options = Fluent.Options
 
-    local function getClosestNPC()
-        local player = game:GetService("Players").LocalPlayer
-        local char = player.Character
-        local hrp = char and char:FindFirstChild("HumanoidRootPart")
-        if not hrp then return nil end
-
-        local lives = workspace:FindFirstChild("Lives")
-        if not lives then return nil end
-
-        local closest = nil
-        local shortestDist = math.huge
-
-        for _, npc in ipairs(lives:GetChildren()) do
-            if npc.Name == "RegularNationNpc" and npc:FindFirstChild("HumanoidRootPart") then
-                local dist = (npc.HumanoidRootPart.Position - hrp.Position).Magnitude
-                if dist < shortestDist then
-                    closest = npc
-                    shortestDist = dist
-                end
-            end
-        end
-
-        return closest
-    end
-
     local gripLoopRunning = false
-    local AutoGripToggle = Tabs.Main:AddToggle("AutoGripToggle", {Title = "Auto Grip Kill (Toggle)", Default = false, Description = "Spams kill on nearest NPC"})
+    local AutoGripToggle = Tabs.Main:AddToggle("AutoGripToggle", {Title = "Spam Grip (Toggle)", Default = false, Description = "Spams grip to farm 5k yuanz per npc"})
 
     AutoGripToggle:OnChanged(function()
         gripLoopRunning = Options.AutoGripToggle.Value
@@ -55,14 +30,13 @@ if game.PlaceId == 96063223159256 then
             while gripLoopRunning do
                 local player = game:GetService("Players").LocalPlayer
                 local char = player.Character
-                local pos = char and char:FindFirstChild("HumanoidRootPart") and char.HumanoidRootPart.Position or nil
-                local target = getClosestNPC()
+                local pos = char and char:FindFirstChild("HumanoidRootPart") and char.HumanoidRootPart.Position
 
-                if target and pos then
+                if char and pos then
                     for _ = 1, 20 do
                         local args = {
                             "Kill",
-                            target,
+                            nil,
                             pos + Vector3.new(1, 2, 0)
                         }
                         char.Scripts.Server.Grip.Event:FireServer(unpack(args))
