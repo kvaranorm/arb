@@ -1,12 +1,11 @@
 -- Check Game
 if game.PlaceId == 96063223159256 then
-    -- Fluent Lib
     local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
     local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
     local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
-    local currentVersion = "ARB: Script v1 (Testing)"
 
-    -- Main GUI
+    local currentVersion = "ARB: Script v2 (Testing)"
+
     local Window = Fluent:CreateWindow({
         Title = currentVersion,
         SubTitle = "by xyro",
@@ -17,162 +16,204 @@ if game.PlaceId == 96063223159256 then
         MinimizeKey = Enum.KeyCode.LeftControl
     })
 
-    -- Tabs
     local Tabs = {
-        Main = Window:AddTab({ Title = "Main Tab", Icon = "" }),
+        Spinning = Window:AddTab({ Title = "Spinning", Icon = "rotate-ccw" }),
+        Players = Window:AddTab({ Title = "Players", Icon = "users" }),
+        Meditation = Window:AddTab({ Title = "Meditation", Icon = "circle" }),
+        NPCs = Window:AddTab({ Title = "NPCs", Icon = "user" }),
+        Codes = Window:AddTab({ Title = "Codes", Icon = "gift" }),
         Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
     }
 
-    -- Fluent Options
     local Options = Fluent.Options
 
-    -- Find closest NPC to grip
-    local function getClosestNPC()
-        local player = game:GetService("Players").LocalPlayer
-        local char = player.Character
-        local hrp = char and char:FindFirstChild("HumanoidRootPart")
-        if not hrp then return nil end
-
-        local lives = workspace:FindFirstChild("Lives")
-        if not lives then return nil end
-
-        local closest = nil
-        local shortestDist = math.huge
-
-        for _, npc in ipairs(lives:GetChildren()) do
-            if npc.Name == "RegularNationNpc" and npc:FindFirstChild("HumanoidRootPart") then
-                local dist = (npc.HumanoidRootPart.Position - hrp.Position).Magnitude
-                if dist < shortestDist then
-                    closest = npc
-                    shortestDist = dist
-                end
-            end
-        end
-
-        return closest
+    local function getHRP()
+        local char = game.Players.LocalPlayer.Character
+        return char and char:FindFirstChild("HumanoidRootPart")
     end
 
-    -- Auto Grip (NPCs)
+    -- Auto Grip NPCs
     local gripLoopRunning = false
-    local AutoGripToggle = Tabs.Main:AddToggle("AutoGripToggle", {
-        Title = "Auto Grip Npcs (Toggle)",
+    Tabs.NPCs:AddToggle("AutoGripToggle", {
+        Title = "Auto Grip NPCs",
         Default = false,
-        Description = "Spam grips on nearest NPC"
-    })
-
-    AutoGripToggle:OnChanged(function()
-        gripLoopRunning = Options.AutoGripToggle.Value
+        Description = "Grips nearest npc repeatedly"
+    }):OnChanged(function(val)
+        gripLoopRunning = val
         task.spawn(function()
             while gripLoopRunning do
-                local player = game:GetService("Players").LocalPlayer
-                local char = player.Character
-                local pos = char and char:FindFirstChild("HumanoidRootPart") and char.HumanoidRootPart.Position or nil
-                local target = getClosestNPC()
-
-                if target and pos then
-                    for _ = 1, 20 do
-                        local args = {
-                            "Kill",
-                            target,
-                            pos + Vector3.new(1, 2, 0)
-                        }
-                        char.Scripts.Server.Grip.Event:FireServer(unpack(args))
+                local char = game.Players.LocalPlayer.Character
+                local hrp = getHRP()
+                local lives = workspace:FindFirstChild("Lives")
+                if hrp and lives then
+                    local closest, shortestDist = nil, math.huge
+                    for _, npc in ipairs(lives:GetChildren()) do
+                        local npcHRP = npc:FindFirstChild("HumanoidRootPart")
+                        if npc.Name == "RegularNationNpc" and npcHRP then
+                            local dist = (npcHRP.Position - hrp.Position).Magnitude
+                            if dist < shortestDist then
+                                closest, shortestDist = npc, dist
+                            end
+                        end
+                    end
+                    if closest then
+                        local args = {"Kill", closest, hrp.Position + Vector3.new(1, 2, 0)}
+                        for _ = 1, 3 do
+                            char.Scripts.Server.Grip.Event:FireServer(unpack(args))
+                            task.wait(0.1)
+                        end
                     end
                 end
-
-                wait()
+                task.wait(0.5)
             end
         end)
     end)
 
-    -- Auto Grip (Players)
+    -- Auto Grip Players
     local playerGripLoopRunning = false
-    local whitelist = {
-        ["KINcAgU"] = true,
-        ["topaisrare"] = true,
-        ["xylrr"] = true,
-        ["Emins398"] = true
-    }
-
-    local AutoGripPlayersToggle = Tabs.Main:AddToggle("AutoGripPlayersToggle", {
-        Title = "Auto Grip Players (Toggle)",
+    local whitelist = { ["KINcAgU"] = true, ["topaisrare"] = true, ["xylrr"] = true }
+    Tabs.Players:AddToggle("AutoGripPlayersToggle", {
+        Title = "Auto Grip Players",
         Default = false,
-        Description = "Spam Grip nearest player within 20 studs (excluding whitelist)"
-    })
-
-    AutoGripPlayersToggle:OnChanged(function()
-        playerGripLoopRunning = Options.AutoGripPlayersToggle.Value
+        Description = "Spams grip on nearest player not in whitelist within 20 studs"
+    }):OnChanged(function(val)
+        playerGripLoopRunning = val
         task.spawn(function()
             while playerGripLoopRunning do
-                local Players = game:GetService("Players")
-                local localPlayer = Players.LocalPlayer
-                local char = localPlayer.Character
-                local hrp = char and char:FindFirstChild("HumanoidRootPart")
-                if not hrp then
-                    task.wait(0.5)
-                    continue
-                end
-
-                local closestTarget = nil
-                local closestDist = 20
-
-                for _, plr in ipairs(Players:GetPlayers()) do
-                    if
-                        plr ~= localPlayer and
-                        not whitelist[plr.Name] and
-                        plr.Character and
-                        plr.Character:FindFirstChild("HumanoidRootPart")
-                    then
-                        local targetHRP = plr.Character.HumanoidRootPart
-                        local dist = (targetHRP.Position - hrp.Position).Magnitude
+                local lp = game.Players.LocalPlayer
+                local hrp = getHRP()
+                if not hrp then task.wait(0.5) continue end
+                local closest, closestDist = nil, 20
+                for _, plr in ipairs(game.Players:GetPlayers()) do
+                    if plr ~= lp and not whitelist[plr.Name] and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
+                        local dist = (plr.Character.HumanoidRootPart.Position - hrp.Position).Magnitude
                         if dist <= closestDist then
-                            closestTarget = plr.Character
-                            closestDist = dist
+                            closest, closestDist = plr.Character, dist
                         end
                     end
                 end
-
-                if closestTarget then
-                    local args = {
-                        "Kill",
-                        closestTarget,
-                        hrp.Position + Vector3.new(1, 2, 0)
-                    }
-                    char.Scripts.Server.Grip.Event:FireServer(unpack(args))
+                if closest then
+                    local args = {"Kill", closest, hrp.Position + Vector3.new(1, 2, 0)}
+                    lp.Character.Scripts.Server.Grip.Event:FireServer(unpack(args))
                 end
-
                 task.wait(0.1)
             end
         end)
     end)
 
     -- Auto Meditate
-    local meditateLoopRunning = false
-    local AutoMeditateToggle = Tabs.Main:AddToggle("AutoMeditateToggle", {
-        Title = "Auto Meditate (Toggle)",
+    Tabs.Meditation:AddToggle("AutoMeditateToggle", {
+        Title = "Auto Meditate",
         Default = false,
-        Description = "Starts meditation and spams create key"
-    })
-
-    AutoMeditateToggle:OnChanged(function()
-        meditateLoopRunning = Options.AutoMeditateToggle.Value
+        Description = "Automatically meditates for you !!YOU HAVE TO SIT ON A MAT AND CLICK MEDITATE THEN TURN IT ON!!"
+    }):OnChanged(function(val)
         task.spawn(function()
-            while meditateLoopRunning do
-                local meditateArgs = { "Start" }
-                game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("Meditate"):FireServer(unpack(meditateArgs))
-
+            while val do
+                game.ReplicatedStorage.RemoteEvents.Meditate:FireServer("Start")
                 for _ = 1, 5 do
-                    local createKeyArgs = { "Complete" }
-                    game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("Create Key"):FireServer(unpack(createKeyArgs))
+                    game.ReplicatedStorage.RemoteEvents["Create Key"]:FireServer("Complete")
                     task.wait(0.1)
                 end
-
                 wait(1.5)
             end
         end)
     end)
 
-    -- Fluent Interface & Save Setup
+    -- Code Redemption
+    local spinCodes = {"wherestheavatarSpins", "25SpinsYay"}
+    local elementCodes = {"flameohotman", "thatsroughbuddy", "rewrittingmaybesoon", "ElementRerollYay"}
+
+    Tabs.Codes:AddButton({
+        Title = "Redeem Spin Codes",
+        Description = "Redeem all spin codes",
+        Callback = function()
+            for _, code in ipairs(spinCodes) do
+                game:GetService("ReplicatedStorage").RemoteEvents.RedeemCode:InvokeServer(code)
+                task.wait(0.5)
+            end
+        end
+    })
+
+    Tabs.Codes:AddDropdown("TargetElement", {
+        Title = "Target Element",
+        Values = {"Air", "Water", "Fire", "Earth"},
+        Multi = false,
+        Default = 1
+    })
+
+    Tabs.Codes:AddButton({
+        Title = "Redeem Element Codes Until Desired",
+        Description = "Redeems all element codes until target element is achieved",
+        Callback = function()
+            local target = Options.TargetElement.Value
+            local player = game.Players.LocalPlayer
+
+            while true do
+                local bending = player:FindFirstChild("Bending")
+                local elementValueObj = bending and bending:FindFirstChild("Value")
+                local currentElement = elementValueObj and elementValueObj.Value
+
+                if currentElement == target then
+                    print("Target element achieved:", currentElement)
+                    break
+                end
+
+                for _, code in ipairs(elementCodes) do
+                    game.ReplicatedStorage.RemoteEvents.RedeemCode:InvokeServer(code)
+                    task.wait(1)
+
+                    bending = player:FindFirstChild("Bending")
+                    elementValueObj = bending and bending:FindFirstChild("Value")
+                    currentElement = elementValueObj and elementValueObj.Value
+
+                    if currentElement == target then
+                        print("Target element achieved after code:", currentElement)
+                        break
+                    end
+                end
+
+                task.wait(1)
+            end
+        end
+    })
+
+    -- Spinning (Family)
+    local autoSpinRunning = false
+    local families = {"Yakoda", "Sozin", "Gyatso", "Lozai", "Vaan", "Tarrlok"}
+
+    Tabs.Spinning:AddDropdown("SpinFamily", {
+        Title = "Target Families",
+        Values = families,
+        Multi = true,
+        Default = {}
+    })
+
+    Tabs.Spinning:AddToggle("AutoSpin", {
+        Title = "Auto Spin (Family)",
+        Default = false,
+        Description = "Spins until a selected family is achieved"
+    }):OnChanged(function(val)
+        autoSpinRunning = val
+        task.spawn(function()
+            local lp = game.Players.LocalPlayer
+            while autoSpinRunning do
+                local familyValueObj = lp:FindFirstChild("Family")
+                local familyValue = familyValueObj and familyValueObj.Value or nil
+                local selectedFamilies = Options.SpinFamily.Value
+
+                if familyValue and table.find(selectedFamilies, familyValue) then
+                    Options.AutoSpin:SetValue(false)
+                    autoSpinRunning = false
+                    break
+                end
+
+                game.ReplicatedStorage.RemoteEvents.Spin:FireServer("Family")
+                task.wait(7.5)
+            end
+        end)
+    end)
+
+    -- Final Setup
     SaveManager:SetLibrary(Fluent)
     InterfaceManager:SetLibrary(Fluent)
     SaveManager:IgnoreThemeSettings()
@@ -182,14 +223,10 @@ if game.PlaceId == 96063223159256 then
     InterfaceManager:BuildInterfaceSection(Tabs.Settings)
     SaveManager:BuildConfigSection(Tabs.Settings)
     Window:SelectTab(1)
-
-    -- Notification
     Fluent:Notify({
         Title = "Fluent",
-        Content = "The script has been loaded.",
+        Content = "Script Loaded Successfully!",
         Duration = 8
     })
-
-    -- Load Saved Config
     SaveManager:LoadAutoloadConfig()
 end
