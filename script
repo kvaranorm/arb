@@ -105,7 +105,7 @@ if game.PlaceId == 96063223159256 then
     Tabs.Meditation:AddToggle("AutoMeditateToggle", {
         Title = "Auto Meditate",
         Default = false,
-        Description = "Automatically meditates for you !!YOU HAVE TO SIT ON A MAT AND CLICK MEDITATE THEN TURN IT ON!!"
+        Description = "Automatically meditates for you !!DISCLAIMER!! YOU HAVE TO SIT ON A MAT AND CLICK MEDITATE THEN TURN IT ON"
     }):OnChanged(function(val)
         task.spawn(function()
             while val do
@@ -130,49 +130,6 @@ if game.PlaceId == 96063223159256 then
             for _, code in ipairs(spinCodes) do
                 game:GetService("ReplicatedStorage").RemoteEvents.RedeemCode:InvokeServer(code)
                 task.wait(0.5)
-            end
-        end
-    })
-
-    Tabs.Codes:AddDropdown("TargetElement", {
-        Title = "Target Element",
-        Values = {"Air", "Water", "Fire", "Earth"},
-        Multi = false,
-        Default = 1
-    })
-
-    Tabs.Codes:AddButton({
-        Title = "Redeem Element Codes Until Desired",
-        Description = "Redeems all element codes until target element is achieved",
-        Callback = function()
-            local target = Options.TargetElement.Value
-            local player = game.Players.LocalPlayer
-
-            while true do
-                local bending = player:FindFirstChild("Bending")
-                local elementValueObj = bending and bending:FindFirstChild("Value")
-                local currentElement = elementValueObj and elementValueObj.Value
-
-                if currentElement == target then
-                    print("Target element achieved:", currentElement)
-                    break
-                end
-
-                for _, code in ipairs(elementCodes) do
-                    game.ReplicatedStorage.RemoteEvents.RedeemCode:InvokeServer(code)
-                    task.wait(1)
-
-                    bending = player:FindFirstChild("Bending")
-                    elementValueObj = bending and bending:FindFirstChild("Value")
-                    currentElement = elementValueObj and elementValueObj.Value
-
-                    if currentElement == target then
-                        print("Target element achieved after code:", currentElement)
-                        break
-                    end
-                end
-
-                task.wait(1)
             end
         end
     })
