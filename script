@@ -1,10 +1,12 @@
 if game.PlaceId == 96063223159256 then
-    local a = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
-    local b = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
-    local c = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
-
-    local d = a:CreateWindow({
-        Title = "ARB: Script v2 (Testing)",
+    -- Load libraries
+    local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+    local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
+    local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
+    
+    local windowTitle = "ARB: Script v2 (Testing)"
+    local window = Fluent:CreateWindow({
+        Title = windowTitle,
         SubTitle = "by xyro",
         TabWidth = 160,
         Size = UDim2.fromOffset(580, 460),
@@ -12,103 +14,113 @@ if game.PlaceId == 96063223159256 then
         Theme = "Dark",
         MinimizeKey = Enum.KeyCode.LeftControl
     })
-
-    local e = {
-        A = d:AddTab({Title = "Spinning", Icon = "rotate-ccw"}),
-        B = d:AddTab({Title = "Players", Icon = "users"}),
-        C = d:AddTab({Title = "Meditation", Icon = "circle"}),
-        D = d:AddTab({Title = "NPCs", Icon = "user"}),
-        E = d:AddTab({Title = "Codes", Icon = "gift"}),
-        F = d:AddTab({Title = "Settings", Icon = "settings"})
+    
+    local tabs = {
+        Spinning = window:AddTab({Title = "Spinning", Icon = "rotate-ccw"}),
+        Players = window:AddTab({Title = "Players", Icon = "users"}),
+        Meditation = window:AddTab({Title = "Meditation", Icon = "circle"}),
+        NPCs = window:AddTab({Title = "NPCs", Icon = "user"}),
+        Codes = window:AddTab({Title = "Codes", Icon = "gift"}),
+        Settings = window:AddTab({Title = "Settings", Icon = "settings"})
     }
-
-    local f = a.Options
-
-    local function g()
-        local h = game.Players.LocalPlayer.Character
-        return h and h:FindFirstChild("HumanoidRootPart") or nil
+    
+    local options = Fluent.Options
+    
+    local function getHumanoidRootPart()
+        local character = game.Players.LocalPlayer.Character
+        if character then
+            return character:FindFirstChild("HumanoidRootPart")
+        end
+        return nil
     end
-
-    local i = false
-    e.D:AddToggle("X1", {
+    
+    -- Auto Grip NPCs toggle
+    local autoGripNPCsEnabled = false
+    tabs.NPCs:AddToggle("AutoGripToggle", {
         Title = "Auto Grip NPCs",
         Default = false,
         Description = "Grips nearest NPC repeatedly"
-    }):OnChanged(function(j)
-        i = j
+    }):OnChanged(function(enabled)
+        autoGripNPCsEnabled = enabled
         task.spawn(function()
-            while i do
-                local k = game.Players.LocalPlayer
-                local l = g()
-                local m = workspace:FindFirstChild("Lives")
-
-                if l and m then
-                    local n, o = nil, math.huge
-                    for _, p in ipairs(m:GetChildren()) do
-                        local q = p:FindFirstChild("HumanoidRootPart")
-                        if p.Name == "RegularNationNpc" and q then
-                            local r = (q.Position - l.Position).Magnitude
-                            if r < o then
-                                n, o = p, r
+            while autoGripNPCsEnabled do
+                local player = game.Players.LocalPlayer
+                local hrp = getHumanoidRootPart()
+                local livesFolder = workspace:FindFirstChild("Lives")
+                
+                if hrp and livesFolder then
+                    local closestNPC, shortestDistance = nil, math.huge
+                    for _, npc in ipairs(livesFolder:GetChildren()) do
+                        local npcHRP = npc:FindFirstChild("HumanoidRootPart")
+                        if npc.Name == "RegularNationNpc" and npcHRP then
+                            local dist = (npcHRP.Position - hrp.Position).Magnitude
+                            if dist < shortestDistance then
+                                closestNPC = npc
+                                shortestDistance = dist
                             end
                         end
                     end
-
-                    if n then
-                        local s = {"Kill", n, l.Position + Vector3.new(1, 2, 0)}
+                    
+                    if closestNPC then
+                        local args = {"Kill", closestNPC, hrp.Position + Vector3.new(1, 2, 0)}
                         for _ = 1, 3 do
-                            k.Character.Scripts.Server.Grip.Event:FireServer(unpack(s))
-                            task.wait(0.1)
+                            player.Character.Scripts.Server.Grip.Event:FireServer(unpack(args))
+                            wait()
                         end
                     end
                 end
-                task.wait(0.5)
+                wait()
             end
         end)
     end)
-
-    local t = false
-    local u = {KINcAgU = true, topaisrare = true, xylrr = true}
-
-    e.B:AddToggle("X2", {
+    
+    -- Auto Grip Players toggle
+    local autoGripPlayersEnabled = false
+    local whitelist = {["KINcAgU"] = true, ["topaisrare"] = true, ["xylrr"] = true}
+    
+    tabs.Players:AddToggle("AutoGripPlayersToggle", {
         Title = "Auto Grip Players",
         Default = false,
         Description = "Spams grip on nearest player not in whitelist within 20 studs"
-    }):OnChanged(function(v)
-        t = v
+    }):OnChanged(function(enabled)
+        autoGripPlayersEnabled = enabled
         task.spawn(function()
-            while t do
-                local w = game.Players.LocalPlayer
-                local x = g()
-                if not x then task.wait(0.5) else
-                    local y, z = nil, 20
-                    for _, A in ipairs(game.Players:GetPlayers()) do
-                        if A ~= w and not u[A.Name] and A.Character and A.Character:FindFirstChild("HumanoidRootPart") then
-                            local B = A.Character.HumanoidRootPart
-                            local C = (B.Position - x.Position).Magnitude
-                            if C <= z then
-                                y, z = A.Character, C
+            while autoGripPlayersEnabled do
+                local localPlayer = game.Players.LocalPlayer
+                local hrp = getHumanoidRootPart()
+                if not hrp then
+                    task.wait(0.5)
+                else
+                    local targetPlayerCharacter, closestDistance = nil, 20
+                    for _, player in ipairs(game.Players:GetPlayers()) do
+                        if player ~= localPlayer and not whitelist[player.Name] and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                            local playerHRP = player.Character.HumanoidRootPart
+                            local dist = (playerHRP.Position - hrp.Position).Magnitude
+                            if dist <= closestDistance then
+                                targetPlayerCharacter = player.Character
+                                closestDistance = dist
                             end
                         end
                     end
-
-                    if y then
-                        local D = {"Kill", y, x.Position + Vector3.new(1, 2, 0)}
-                        w.Character.Scripts.Server.Grip.Event:FireServer(unpack(D))
+                    
+                    if targetPlayerCharacter then
+                        local args = {"Kill", targetPlayerCharacter, hrp.Position + Vector3.new(1, 2, 0)}
+                        localPlayer.Character.Scripts.Server.Grip.Event:FireServer(unpack(args))
                     end
                     task.wait(0.1)
                 end
             end
         end)
     end)
-
-    e.C:AddToggle("X3", {
+    
+    -- Auto Meditate toggle
+    tabs.Meditation:AddToggle("AutoMeditateToggle", {
         Title = "Auto Meditate",
         Default = false,
-        Description = "Automatically meditates for you"
-    }):OnChanged(function(E)
+        Description = "Automatically meditates for you !!DISCLAIMER!! YOU HAVE TO SIT ON A MAT AND CLICK MEDITATE THEN TURN IT ON"
+    }):OnChanged(function(enabled)
         task.spawn(function()
-            while E do
+            while enabled do
                 game.ReplicatedStorage.RemoteEvents.Meditate:FireServer("Start")
                 for _ = 1, 5 do
                     game.ReplicatedStorage.RemoteEvents["Create Key"]:FireServer("Complete")
@@ -118,102 +130,181 @@ if game.PlaceId == 96063223159256 then
             end
         end)
     end)
-
-    local F = {"wherestheavatarSpins", "25SpinsYay"}
-    e.E:AddButton({
-        Title = "Redeem Spin Codes",
-        Description = "Redeem all spin codes",
-        Callback = function()
-            for _, G in ipairs(F) do
-                game:GetService("ReplicatedStorage").RemoteEvents.RedeemCode:InvokeServer(G)
-                task.wait(0.5)
-            end
-        end
-    })
-
-    local H = {"Yakoda", "Sozin", "Gyatso", "Lozai", "Vaan", "Tarrlok"}
-    e.A:AddDropdown("X4", {
-        Title = "Target Families",
-        Values = H,
-        Multi = true,
-        Default = {}
-    })
-
-    e.A:AddToggle("X5", {
-        Title = "Auto Spin (Family)",
-        Default = false,
-        Description = "Spins until a selected family is achieved"
-    }):OnChanged(function(I)
-        task.spawn(function()
-            local J = game.Players.LocalPlayer
-            while I do
-                local K = J:FindFirstChild("Family")
-                local L = K and K.Value or nil
-                local M = f.X4.Value
-
-                if L and table.find(M, L) then
-                    f.X5:SetValue(false)
-                    break
-                end
-
-                game.ReplicatedStorage.RemoteEvents.Spin:FireServer("Family")
-                task.wait(7.5)
-            end
-        end)
-    end)
-
-    local N = {"Fire", "Water", "Earth", "Air"}
-    local O = {
-        "flameohotman",
-        "thatsroughbuddy",
-        "rewrittingmaybesoon",
-        "ElementRerollYay"
-    }
-
-    e.E:AddDropdown("X6", {
-        Title = "Target Elements",
-        Values = N,
-        Multi = true,
-        Default = {}
-    })
-
-    e.E:AddToggle("X7", {
-        Title = "Auto Redeem Element Codes",
-        Default = false,
-        Description = "Redeem element codes until you get one of the selected elements"
-    }):OnChanged(function(P)
-        task.spawn(function()
-            local Q = game.Players.LocalPlayer
-            while P do
-                local R = Q:FindFirstChild("Element")
-                local S = R and R.Value or nil
-                local T = f.X6.Value
-
-                if S and table.find(T, S) then
-                    f.X7:SetValue(false)
-                    break
-                end
-
-                for _, U in ipairs(O) do
-                    game:GetService("ReplicatedStorage").RemoteEvents.RedeemCode:InvokeServer(U)
-                    task.wait(1.5)
-                end
-            end
-        end)
-    end)
-
-    b:SetLibrary(a)
-    c:SetLibrary(a)
-    b:IgnoreThemeSettings()
-    b:SetIgnoreIndexes({})
-    c:SetFolder("FluentScriptHub")
-    b:SetFolder("FluentScriptHub/specific-game")
-    c:BuildInterfaceSection(e.F)
-    b:BuildConfigSection(e.F)
-
-    d:SelectTab(1)
-    a:Notify({
+    
+    -- Setup SaveManager and InterfaceManager
+    SaveManager:SetLibrary(Fluent)
+    InterfaceManager:SetLibrary(Fluent)
+    SaveManager:IgnoreThemeSettings()
+    SaveManager:SetIgnoreIndexes({})
+    InterfaceManager:SetFolder("FluentScriptHub")
+    SaveManager:SetFolder("FluentScriptHub/specific-game")
+    InterfaceManager:BuildInterfaceSection(tabs.Settings)
+    SaveManager:BuildConfigSection(tabs.Settings)
+    
+    window:SelectTab(1)
+    
+    Fluent:Notify({
         Title = "Fluent",
         Content = "Script Loaded Successfully!",
         Duration = 8
-    }
+    })
+    
+    SaveManager:LoadAutoloadConfig()
+
+
+    -- ====== START OF NEW CODE ======
+    local ReplicatedStorage = game:GetService("ReplicatedStorage")
+    local LocalPlayer = game.Players.LocalPlayer
+
+    -- Families, Traits and Elements lists
+    local Families = {"Yakoda", "Lozai", "Leifong", "Tarrlok", "Sozin", "Hama", "Gyatso", "Vaan"}
+    local Traits = {"Agile", "Deadly", "Evil", "Athlete", "Limb", "Prodigy", "Talented"}
+    local Elements = {"Water", "Earth", "Air", "Fire"}
+
+    local SpinCodes = {"wherestheavatarSpins", "25SpinsYay"}
+    local ElementCodes = {"flameohotman", "thatsroughbuddy", "rewrittingmaybesoon", "wherestheavatarSpins", "ElementRerollYay", "25SpinsYay"}
+
+    -- Auto Spin variables
+    local autoSpinEnabled = false
+    local selectedFamilies = {}
+    local selectedTraits = {}
+
+    -- Auto Redeem variables
+    local autoRedeemSpinEnabled = false
+    local autoRedeemElementEnabled = false
+    local targetElement = Elements[1]
+
+    -- Function to spin for families and traits
+    local function spinForCategories()
+        local spinRemote = ReplicatedStorage:WaitForChild("RemoteEvents"):WaitForChild("Spin")
+        while autoSpinEnabled and not Fluent.Unloaded do
+            -- Spin for families if any selected
+            if next(selectedFamilies) then
+                spinRemote:FireServer("Family")
+                task.wait(1)
+                local familyValue = LocalPlayer:FindFirstChild("Family") and LocalPlayer.Family.Value or ""
+                for _, fam in ipairs(selectedFamilies) do
+                    if familyValue:find(fam) then
+                        autoSpinEnabled = false
+                        Fluent:Notify({Title = "Family Match", Content = "You rolled family: "..fam, Duration = 5})
+                        break
+                    end
+                end
+            end
+
+            -- Spin for traits if any selected
+            if autoSpinEnabled and next(selectedTraits) then
+                spinRemote:FireServer("Trait")
+                task.wait(1)
+                local traitStat = LocalPlayer:FindFirstChild("Player Stats") and LocalPlayer["Player Stats"]:FindFirstChild("Trait")
+                local traitValue = traitStat and traitStat.Value or ""
+                for _, trait in ipairs(selectedTraits) do
+                    if traitValue:find(trait) then
+                        autoSpinEnabled = false
+                        Fluent:Notify({Title = "Trait Match", Content = "You rolled trait: "..trait, Duration = 5})
+                        break
+                    end
+                end
+            end
+            task.wait(0.5)
+        end
+    end
+
+    -- Auto Spin UI Setup on Spinning Tab
+    tabs.Spinning:AddParagraph({Title = "Auto Spin Settings", Content = "Select families and traits to spin for, then toggle Auto Spin."})
+
+    local familyDropdown = tabs.Spinning:AddDropdown("FamilyDropdown", {
+        Title = "Select Families",
+        Description = "Choose families to spin for (multiple allowed)",
+        Values = Families,
+        Multi = true,
+        Default = {}
+    })
+    familyDropdown:OnChanged(function(value)
+        selectedFamilies = {}
+        for fam, selected in pairs(value) do
+            if selected then table.insert(selectedFamilies, fam) end
+        end
+    end)
+
+    local traitDropdown = tabs.Spinning:AddDropdown("TraitDropdown", {
+        Title = "Select Traits",
+        Description = "Choose traits to spin for (multiple allowed)",
+        Values = Traits,
+        Multi = true,
+        Default = {}
+    })
+    traitDropdown:OnChanged(function(value)
+        selectedTraits = {}
+        for trait, selected in pairs(value) do
+            if selected then table.insert(selectedTraits, trait) end
+        end
+    end)
+
+    tabs.Spinning:AddToggle("AutoSpinToggle", {
+        Title = "Auto Spin",
+        Description = "Starts spinning for selected families and traits",
+        Default = false
+    }):OnChanged(function(state)
+        autoSpinEnabled = state
+        if state then
+            task.spawn(spinForCategories)
+        end
+    end)
+
+
+    -- Auto Redeem Spin Codes Toggle in Codes Tab
+    tabs.Codes:AddToggle("AutoRedeemSpin", {
+        Title = "Auto Redeem Spin Codes",
+        Description = "Redeem all spin codes automatically once",
+        Default = false
+    }):OnChanged(function(state)
+        autoRedeemSpinEnabled = state
+        if state then
+            task.spawn(function()
+                for _, code in ipairs(SpinCodes) do
+                    ReplicatedStorage.RemoteEvents.RedeemCode:InvokeServer(code)
+                    task.wait(0.5)
+                end
+                autoRedeemSpinEnabled = false
+            end)
+        end
+    end)
+
+    -- Element dropdown for Codes tab
+    local elementDropdown = tabs.Codes:AddDropdown("ElementDropdown", {
+        Title = "Select Target Element",
+        Description = "Select element to stop auto redeem",
+        Values = Elements,
+        Multi = false,
+        Default = 1
+    })
+
+    elementDropdown:OnChanged(function(value)
+        targetElement = value
+    end)
+    elementDropdown:SetValue(targetElement)
+
+    -- Auto Redeem Element Codes Toggle
+    tabs.Codes:AddToggle("AutoRedeemElement", {
+        Title = "Auto Redeem Element Codes",
+        Description = "Redeem element codes until target element is rolled",
+        Default = false
+    }):OnChanged(function(state)
+        autoRedeemElementEnabled = state
+        if state then
+            task.spawn(function()
+                while autoRedeemElementEnabled do
+                    ReplicatedStorage.RemoteEvents.RedeemCode:InvokeServer(ElementCodes[math.random(1, #ElementCodes)])
+                    task.wait(1)
+                    local bendingVal = LocalPlayer:FindFirstChild("Bending") and LocalPlayer.Bending.Value or ""
+                    if bendingVal == targetElement then
+                        autoRedeemElementEnabled = false
+                        Fluent:Notify({Title = "Element Match", Content = "You got element: "..targetElement, Duration = 5})
+                        break
+                    end
+                end
+            end)
+        end
+    end)
+end
