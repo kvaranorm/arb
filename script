@@ -1,3 +1,4 @@
+
 if game.PlaceId == 96063223159256 then
     -- Load libraries
     local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
@@ -15,11 +16,11 @@ if game.PlaceId == 96063223159256 then
     })
 
     local tabs = {
-        Scrolls = window:AddTab({Title = "Scrolls", Icon = "book"}),
         Spinning = window:AddTab({Title = "Spinning", Icon = "rotate-ccw"}),
         Players = window:AddTab({Title = "Players", Icon = "users"}),
         Meditation = window:AddTab({Title = "Meditation", Icon = "circle"}),
         NPCs = window:AddTab({Title = "NPCs", Icon = "user"}),
+        Scrolls = window:AddTab({Title = "Scrolls", Icon = "book"}),
         Codes = window:AddTab({Title = "Codes", Icon = "gift"}),
         Settings = window:AddTab({Title = "Settings", Icon = "settings"})
     }
@@ -270,7 +271,7 @@ if game.PlaceId == 96063223159256 then
         end
     end)
 
-   -- Scrolls Tab
+   -- Scrolls
     tabs.Scrolls:AddButton({
         Title = "Get Water Wave",
         Description = "Click for Water Wave Scroll",
