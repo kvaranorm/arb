@@ -164,7 +164,6 @@ if game.PlaceId == 96063223159256 then
     local ElementCodes = {"flameohotman", "thatsroughbuddy", "rewrittingmaybesoon", "wherestheavatarSpins", "ElementRerollYay", "25SpinsYay"}
 
     -- Auto Spin variables
-    local autoSpinEnabled = false
     local autoSpinFamilyEnabled = false
     local autoSpinTraitEnabled = false
     local selectedFamilies = {}
@@ -175,36 +174,37 @@ if game.PlaceId == 96063223159256 then
     local autoRedeemElementEnabled = false
     local targetElement = Elements[1]
 
-    -- Function to spin for families and traits
-    local function spinForCategories()
+    -- Function to spin for Family
+    local function spinForFamily()
         local spinRemote = ReplicatedStorage:WaitForChild("RemoteEvents"):WaitForChild("Spin")
-        while autoSpinEnabled and not Fluent.Unloaded do
-            if autoSpinFamilyEnabled and next(selectedFamilies) then
-                spinRemote:FireServer("Family")
-                task.wait(7.5)
-                local familyValue = LocalPlayer:FindFirstChild("Family") and LocalPlayer.Family.Value or ""
-                for _, fam in ipairs(selectedFamilies) do
-                    if familyValue:find(fam) then
-                        autoSpinEnabled = false
-                        autoSpinFamilyEnabled = false
-                        Fluent:Notify({Title = "Family Match", Content = "You rolled family: "..fam, Duration = 5})
-                        break
-                    end
+        while autoSpinFamilyEnabled and not Fluent.Unloaded do
+            spinRemote:FireServer("Family")
+            task.wait(7.5)
+            local familyValue = LocalPlayer:FindFirstChild("Family") and LocalPlayer.Family.Value or ""
+            for _, fam in ipairs(selectedFamilies) do
+                if familyValue:find(fam) then
+                    autoSpinFamilyEnabled = false
+                    Fluent:Notify({Title = "Family Match", Content = "You rolled family: " .. fam, Duration = 5})
+                    return
                 end
             end
+            task.wait(0.5)
+        end
+    end
 
-            if autoSpinTraitEnabled and next(selectedTraits) then
-                spinRemote:FireServer("Trait")
-                task.wait(7.5)
-                local traitStat = LocalPlayer:FindFirstChild("Player Stats") and LocalPlayer["Player Stats"]:FindFirstChild("Trait")
-                local traitValue = traitStat and traitStat.Value or ""
-                for _, trait in ipairs(selectedTraits) do
-                    if traitValue:find(trait) then
-                        autoSpinEnabled = false
-                        autoSpinTraitEnabled = false
-                        Fluent:Notify({Title = "Trait Match", Content = "You rolled trait: "..trait, Duration = 5})
-                        break
-                    end
+    -- Function to spin for Trait
+    local function spinForTrait()
+        local spinRemote = ReplicatedStorage:WaitForChild("RemoteEvents"):WaitForChild("Spin")
+        while autoSpinTraitEnabled and not Fluent.Unloaded do
+            spinRemote:FireServer("Trait")
+            task.wait(7.5)
+            local traitStat = LocalPlayer:FindFirstChild("Player Stats") and LocalPlayer["Player Stats"]:FindFirstChild("Trait")
+            local traitValue = traitStat and traitStat.Value or ""
+            for _, trait in ipairs(selectedTraits) do
+                if traitValue:find(trait) then
+                    autoSpinTraitEnabled = false
+                    Fluent:Notify({Title = "Trait Match", Content = "You rolled trait: " .. trait, Duration = 5})
+                    return
                 end
             end
             task.wait(0.5)
@@ -212,7 +212,7 @@ if game.PlaceId == 96063223159256 then
     end
 
     -- Auto Spin UI Setup on Spinning Tab
-    tabs.Spinning:AddParagraph({Title = "Auto Spin Settings", Content = "Select families and traits to spin for, then toggle Auto Spin."})
+    tabs.Spinning:AddParagraph({Title = "Auto Spin Settings", Content = "Select families and traits to spin for, then toggle each separately."})
 
     local familyDropdown = tabs.Spinning:AddDropdown("FamilyDropdown", {
         Title = "Select Families",
@@ -242,29 +242,22 @@ if game.PlaceId == 96063223159256 then
         end
     end)
 
-    -- Separate toggles
     tabs.Spinning:AddToggle("AutoSpinFamilyToggle", {
         Title = "Auto Spin Family",
-        Description = "Spins for selected families only",
+        Description = "Spins only for selected families",
         Default = false
     }):OnChanged(function(state)
         autoSpinFamilyEnabled = state
-        autoSpinEnabled = autoSpinFamilyEnabled or autoSpinTraitEnabled
-        if autoSpinEnabled then
-            task.spawn(spinForCategories)
-        end
+        if state then task.spawn(spinForFamily) end
     end)
 
     tabs.Spinning:AddToggle("AutoSpinTraitToggle", {
         Title = "Auto Spin Trait",
-        Description = "Spins for selected traits only",
+        Description = "Spins only for selected traits",
         Default = false
     }):OnChanged(function(state)
         autoSpinTraitEnabled = state
-        autoSpinEnabled = autoSpinFamilyEnabled or autoSpinTraitEnabled
-        if autoSpinEnabled then
-            task.spawn(spinForCategories)
-        end
+        if state then task.spawn(spinForTrait) end
     end)
 
     -- Auto Redeem Spin Codes Toggle in Codes Tab
@@ -293,7 +286,6 @@ if game.PlaceId == 96063223159256 then
         Multi = false,
         Default = 1
     })
-
     elementDropdown:OnChanged(function(value)
         targetElement = value
     end)
@@ -314,7 +306,7 @@ if game.PlaceId == 96063223159256 then
                     local bendingVal = LocalPlayer:FindFirstChild("Bending") and LocalPlayer.Bending.Value or ""
                     if bendingVal == targetElement then
                         autoRedeemElementEnabled = false
-                        Fluent:Notify({Title = "Element Match", Content = "You got element: "..targetElement, Duration = 5})
+                        Fluent:Notify({Title = "Element Match", Content = "You got element: " .. targetElement, Duration = 5})
                         break
                     end
                 end
