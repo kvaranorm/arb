@@ -4,9 +4,8 @@ if game.PlaceId == 96063223159256 then
     local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
     local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
-    local windowTitle = "ARB: Script v2 (Testing)"
     local window = Fluent:CreateWindow({
-        Title = windowTitle,
+        Title = "ARB: Script v2 (Testing)",
         SubTitle = "by xyro",
         TabWidth = 160,
         Size = UDim2.fromOffset(580, 460),
@@ -16,6 +15,7 @@ if game.PlaceId == 96063223159256 then
     })
 
     local tabs = {
+        Scrolls = window:AddTab({Title = "Scrolls", Icon = "book"}),
         Spinning = window:AddTab({Title = "Spinning", Icon = "rotate-ccw"}),
         Players = window:AddTab({Title = "Players", Icon = "users"}),
         Meditation = window:AddTab({Title = "Meditation", Icon = "circle"}),
@@ -25,16 +25,21 @@ if game.PlaceId == 96063223159256 then
     }
 
     local options = Fluent.Options
+    local ReplicatedStorage = game:GetService("ReplicatedStorage")
+    local LocalPlayer = game.Players.LocalPlayer
 
+    local Families = {"Yakoda", "Lozai", "Leifong", "Tarrlok", "Sozin", "Hama", "Gyatso", "Vaan"}
+    local Traits = {"Agile", "Deadly", "Evil", "Athlete", "Limb", "Prodigy", "Talented"}
+    local Elements = {"Water", "Earth", "Air", "Fire"}
+    local SpinCodes = {"wherestheavatarSpins", "25SpinsYay"}
+    local ElementCodes = {"flameohotman", "thatsroughbuddy", "rewrittingmaybesoon", "wherestheavatarSpins", "ElementRerollYay", "25SpinsYay"}
+
+    -- Auto Grip NPCs
     local function getHumanoidRootPart()
         local character = game.Players.LocalPlayer.Character
-        if character then
-            return character:FindFirstChild("HumanoidRootPart")
-        end
-        return nil
+        return character and character:FindFirstChild("HumanoidRootPart")
     end
 
-    -- Auto Grip NPCs toggle
     local autoGripNPCsEnabled = false
     tabs.NPCs:AddToggle("AutoGripToggle", {
         Title = "Auto Grip NPCs",
@@ -74,7 +79,7 @@ if game.PlaceId == 96063223159256 then
         end)
     end)
 
-    -- Auto Grip Players toggle
+    -- Auto Grip Players
     local autoGripPlayersEnabled = false
     local whitelist = {["KINcAgU"] = true, ["topaisrare"] = true, ["xylrr"] = true}
 
@@ -113,11 +118,11 @@ if game.PlaceId == 96063223159256 then
         end)
     end)
 
-    -- Auto Meditate toggle
+    -- Auto Meditate
     tabs.Meditation:AddToggle("AutoMeditateToggle", {
         Title = "Auto Meditate",
         Default = false,
-        Description = "Automatically meditates for you !!DISCLAIMER!! THIS IS STILL BUGGY, SO WHEN YOU GET TO ENOUGH STAMINA REJOIN TO STOP MEDITATING"
+        Description = "Automatically meditates for you"
     }):OnChanged(function(enabled)
         task.spawn(function()
             while enabled do
@@ -131,50 +136,12 @@ if game.PlaceId == 96063223159256 then
         end)
     end)
 
-    -- Setup SaveManager and InterfaceManager
-    SaveManager:SetLibrary(Fluent)
-    InterfaceManager:SetLibrary(Fluent)
-    SaveManager:IgnoreThemeSettings()
-    SaveManager:SetIgnoreIndexes({})
-    InterfaceManager:SetFolder("FluentScriptHub")
-    SaveManager:SetFolder("FluentScriptHub/specific-game")
-    InterfaceManager:BuildInterfaceSection(tabs.Settings)
-    SaveManager:BuildConfigSection(tabs.Settings)
-
-    window:SelectTab(1)
-
-    Fluent:Notify({
-        Title = "Fluent",
-        Content = "Script Loaded Successfully!",
-        Duration = 8
-    })
-
-    SaveManager:LoadAutoloadConfig()
-
-    -- ====== START OF NEW CODE ======
-    local ReplicatedStorage = game:GetService("ReplicatedStorage")
-    local LocalPlayer = game.Players.LocalPlayer
-
-    -- Families, Traits and Elements lists
-    local Families = {"Yakoda", "Lozai", "Leifong", "Tarrlok", "Sozin", "Hama", "Gyatso", "Vaan"}
-    local Traits = {"Agile", "Deadly", "Evil", "Athlete", "Limb", "Prodigy", "Talented"}
-    local Elements = {"Water", "Earth", "Air", "Fire"}
-
-    local SpinCodes = {"wherestheavatarSpins", "25SpinsYay"}
-    local ElementCodes = {"flameohotman", "thatsroughbuddy", "rewrittingmaybesoon", "wherestheavatarSpins", "ElementRerollYay", "25SpinsYay"}
-
-    -- Auto Spin variables
+    -- Auto Spin
     local autoSpinFamilyEnabled = false
     local autoSpinTraitEnabled = false
     local selectedFamilies = {}
     local selectedTraits = {}
 
-    -- Auto Redeem variables
-    local autoRedeemSpinEnabled = false
-    local autoRedeemElementEnabled = false
-    local targetElement = Elements[1]
-
-    -- Function to spin for Family
     local function spinForFamily()
         local spinRemote = ReplicatedStorage:WaitForChild("RemoteEvents"):WaitForChild("Spin")
         while autoSpinFamilyEnabled and not Fluent.Unloaded do
@@ -192,7 +159,6 @@ if game.PlaceId == 96063223159256 then
         end
     end
 
-    -- Function to spin for Trait
     local function spinForTrait()
         local spinRemote = ReplicatedStorage:WaitForChild("RemoteEvents"):WaitForChild("Spin")
         while autoSpinTraitEnabled and not Fluent.Unloaded do
@@ -211,31 +177,28 @@ if game.PlaceId == 96063223159256 then
         end
     end
 
-    -- Auto Spin UI Setup on Spinning Tab
     tabs.Spinning:AddParagraph({Title = "Auto Spin Settings", Content = "Select families and traits to spin for, then toggle each separately."})
 
-    local familyDropdown = tabs.Spinning:AddDropdown("FamilyDropdown", {
+    tabs.Spinning:AddDropdown("FamilyDropdown", {
         Title = "Select Families",
         Description = "Choose families to spin for (multiple allowed)",
         Values = Families,
         Multi = true,
         Default = {}
-    })
-    familyDropdown:OnChanged(function(value)
+    }):OnChanged(function(value)
         selectedFamilies = {}
         for fam, selected in pairs(value) do
             if selected then table.insert(selectedFamilies, fam) end
         end
     end)
 
-    local traitDropdown = tabs.Spinning:AddDropdown("TraitDropdown", {
+    tabs.Spinning:AddDropdown("TraitDropdown", {
         Title = "Select Traits",
         Description = "Choose traits to spin for (multiple allowed)",
         Values = Traits,
         Multi = true,
         Default = {}
-    })
-    traitDropdown:OnChanged(function(value)
+    }):OnChanged(function(value)
         selectedTraits = {}
         for trait, selected in pairs(value) do
             if selected then table.insert(selectedTraits, trait) end
@@ -260,52 +223,45 @@ if game.PlaceId == 96063223159256 then
         if state then task.spawn(spinForTrait) end
     end)
 
-    -- Auto Redeem Spin Codes Toggle in Codes Tab
     tabs.Codes:AddToggle("AutoRedeemSpin", {
         Title = "Auto Redeem Spin Codes",
         Description = "Redeem all spin codes automatically once",
         Default = false
     }):OnChanged(function(state)
-        autoRedeemSpinEnabled = state
         if state then
             task.spawn(function()
                 for _, code in ipairs(SpinCodes) do
                     ReplicatedStorage.RemoteEvents.RedeemCode:InvokeServer(code)
                     task.wait(0.5)
                 end
-                autoRedeemSpinEnabled = false
             end)
         end
     end)
 
-    -- Element dropdown
-    local elementDropdown = tabs.Codes:AddDropdown("ElementDropdown", {
+    local targetElement = Elements[1]
+
+    tabs.Codes:AddDropdown("ElementDropdown", {
         Title = "Select Target Element",
         Description = "Select element to stop auto redeem",
         Values = Elements,
         Multi = false,
         Default = 1
-    })
-    elementDropdown:OnChanged(function(value)
+    }):OnChanged(function(value)
         targetElement = value
     end)
-    elementDropdown:SetValue(targetElement)
 
-    -- Auto Redeem Element Codes Toggle
     tabs.Codes:AddToggle("AutoRedeemElement", {
         Title = "Auto Redeem Element Codes",
         Description = "Redeem element codes until target element is rolled",
         Default = false
     }):OnChanged(function(state)
-        autoRedeemElementEnabled = state
         if state then
             task.spawn(function()
-                while autoRedeemElementEnabled do
+                while state do
                     ReplicatedStorage.RemoteEvents.RedeemCode:InvokeServer(ElementCodes[math.random(1, #ElementCodes)])
                     task.wait(1)
                     local bendingVal = LocalPlayer:FindFirstChild("Bending") and LocalPlayer.Bending.Value or ""
                     if bendingVal == targetElement then
-                        autoRedeemElementEnabled = false
                         Fluent:Notify({Title = "Element Match", Content = "You got element: " .. targetElement, Duration = 5})
                         break
                     end
@@ -313,4 +269,172 @@ if game.PlaceId == 96063223159256 then
             end)
         end
     end)
+
+   -- Scrolls
+    tabs.Scrolls:AddButton({
+        Title = "Get Water Wave",
+        Description = "Click for Water Wave Scroll",
+        Callback = function()
+            local v23 = 1423 - (630 + 793) -- 0
+            local v24
+            while true do
+                if v23 == 0 then
+                    v24 = {"Equip", {Item = "Water Wave Scroll"}}
+                    game:GetService("Players").LocalPlayer
+                        :WaitForChild("PlayerGui")
+                        :WaitForChild("InventoryStore")
+                        :WaitForChild("Adjust")
+                        :WaitForChild("RemoteEvent")
+                        :FireServer(unpack(v24))
+                    break
+                end
+            end
+        end
+    })
+
+        tabs.Scrolls:AddButton({
+        Title = "Get Air Tornado",
+        Description = "Click for Air Tornado Scroll",
+        Callback = function()
+            local v23 = 1423 - (630 + 793) -- 0
+            local v24
+            while true do
+                if v23 == 0 then
+                    v24 = {"Equip", {Item = "Air Tornado Scroll"}}
+                    game:GetService("Players").LocalPlayer
+                        :WaitForChild("PlayerGui")
+                        :WaitForChild("InventoryStore")
+                        :WaitForChild("Adjust")
+                        :WaitForChild("RemoteEvent")
+                        :FireServer(unpack(v24))
+                    break
+                end
+            end
+        end
+    })
+
+        tabs.Scrolls:AddButton({
+        Title = "Get Comet Jab",
+        Description = "Click for Comet Jab Scroll",
+        Callback = function()
+            local v23 = 1423 - (630 + 793) -- 0
+            local v24
+            while true do
+                if v23 == 0 then
+                    v24 = {"Equip", {Item = "Comet Jab Scroll"}}
+                    game:GetService("Players").LocalPlayer
+                        :WaitForChild("PlayerGui")
+                        :WaitForChild("InventoryStore")
+                        :WaitForChild("Adjust")
+                        :WaitForChild("RemoteEvent")
+                        :FireServer(unpack(v24))
+                    break
+                end
+            end
+        end
+    })
+
+        tabs.Scrolls:AddButton({
+        Title = "Get Water Barrage",
+        Description = "Click for Water Barrage Scroll",
+        Callback = function()
+            local v23 = 1423 - (630 + 793) -- 0
+            local v24
+            while true do
+                if v23 == 0 then
+                    v24 = {"Equip", {Item = "Water Barrage Scroll"}}
+                    game:GetService("Players").LocalPlayer
+                        :WaitForChild("PlayerGui")
+                        :WaitForChild("InventoryStore")
+                        :WaitForChild("Adjust")
+                        :WaitForChild("RemoteEvent")
+                        :FireServer(unpack(v24))
+                    break
+                end
+            end
+        end
+    })
+
+        tabs.Scrolls:AddButton({
+        Title = "Get Earth Launch",
+        Description = "Click for Earth Launch Scroll",
+        Callback = function()
+            local v23 = 1423 - (630 + 793) -- 0
+            local v24
+            while true do
+                if v23 == 0 then
+                    v24 = {"Equip", {Item = "Earth Launch Scroll"}}
+                    game:GetService("Players").LocalPlayer
+                        :WaitForChild("PlayerGui")
+                        :WaitForChild("InventoryStore")
+                        :WaitForChild("Adjust")
+                        :WaitForChild("RemoteEvent")
+                        :FireServer(unpack(v24))
+                    break
+                end
+            end
+        end
+    })
+
+        tabs.Scrolls:AddButton({
+        Title = "Get Blood Grab",
+        Description = "Click for Blood Grab Scroll",
+        Callback = function()
+            local v23 = 1423 - (630 + 793) -- 0
+            local v24
+            while true do
+                if v23 == 0 then
+                    v24 = {"Equip", {Item = "Blood Grab Scroll"}}
+                    game:GetService("Players").LocalPlayer
+                        :WaitForChild("PlayerGui")
+                        :WaitForChild("InventoryStore")
+                        :WaitForChild("Adjust")
+                        :WaitForChild("RemoteEvent")
+                        :FireServer(unpack(v24))
+                    break
+                end
+            end
+        end
+    })
+
+        tabs.Scrolls:AddButton({
+        Title = "Get Lava",
+        Description = "Click for Lava Scroll",
+        Callback = function()
+            local v23 = 1423 - (630 + 793) -- 0
+            local v24
+            while true do
+                if v23 == 0 then
+                    v24 = {"Equip", {Item = "Lava Scroll"}}
+                    game:GetService("Players").LocalPlayer
+                        :WaitForChild("PlayerGui")
+                        :WaitForChild("InventoryStore")
+                        :WaitForChild("Adjust")
+                        :WaitForChild("RemoteEvent")
+                        :FireServer(unpack(v24))
+                    break
+                end
+            end
+        end
+    })
+
+    -- Final init
+    SaveManager:SetLibrary(Fluent)
+    InterfaceManager:SetLibrary(Fluent)
+    SaveManager:IgnoreThemeSettings()
+    SaveManager:SetIgnoreIndexes({})
+    InterfaceManager:SetFolder("FluentScriptHub")
+    SaveManager:SetFolder("FluentScriptHub/specific-game")
+    InterfaceManager:BuildInterfaceSection(tabs.Settings)
+    SaveManager:BuildConfigSection(tabs.Settings)
+
+    window:SelectTab(1)
+
+    Fluent:Notify({
+        Title = "Fluent",
+        Content = "Script Loaded Successfully!",
+        Duration = 8
+    })
+
+    SaveManager:LoadAutoloadConfig()
 end
