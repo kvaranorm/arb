@@ -181,7 +181,7 @@ if game.PlaceId == 96063223159256 then
             -- Spin for families if any selected
             if next(selectedFamilies) then
                 spinRemote:FireServer("Family")
-                task.wait(1)
+                task.wait(7.5)
                 local familyValue = LocalPlayer:FindFirstChild("Family") and LocalPlayer.Family.Value or ""
                 for _, fam in ipairs(selectedFamilies) do
                     if familyValue:find(fam) then
@@ -195,7 +195,7 @@ if game.PlaceId == 96063223159256 then
             -- Spin for traits if any selected
             if autoSpinEnabled and next(selectedTraits) then
                 spinRemote:FireServer("Trait")
-                task.wait(1)
+                task.wait(7.5)
                 local traitStat = LocalPlayer:FindFirstChild("Player Stats") and LocalPlayer["Player Stats"]:FindFirstChild("Trait")
                 local traitValue = traitStat and traitStat.Value or ""
                 for _, trait in ipairs(selectedTraits) do
@@ -271,7 +271,7 @@ if game.PlaceId == 96063223159256 then
         end
     end)
 
-    -- Element dropdown for Codes tab
+    -- Element dropdown
     local elementDropdown = tabs.Codes:AddDropdown("ElementDropdown", {
         Title = "Select Target Element",
         Description = "Select element to stop auto redeem",
