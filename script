@@ -270,7 +270,7 @@ if game.PlaceId == 96063223159256 then
         end
     end)
 
-   -- Scrolls
+   -- Scrolls Tab
     tabs.Scrolls:AddButton({
         Title = "Get Water Wave",
         Description = "Click for Water Wave Scroll",
