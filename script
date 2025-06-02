@@ -398,14 +398,14 @@ if game.PlaceId == 96063223159256 then
     })
 
         tabs.Scrolls:AddButton({
-        Title = "Get Lava",
-        Description = "Click for Lava Scroll",
+        Title = "Get Lava Line",
+        Description = "Click for Lava Line",
         Callback = function()
             local v23 = 1423 - (630 + 793) -- 0
             local v24
             while true do
                 if v23 == 0 then
-                    v24 = {"Equip", {Item = "Lava Scroll"}}
+                    v24 = {"Equip", {Item = "Lava Line Scroll"}}
                     game:GetService("Players").LocalPlayer
                         :WaitForChild("PlayerGui")
                         :WaitForChild("InventoryStore")
