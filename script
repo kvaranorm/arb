@@ -3,7 +3,7 @@ if game.PlaceId == 96063223159256 then
     local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
     local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
     local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
-    
+
     local windowTitle = "ARB: Script v2 (Testing)"
     local window = Fluent:CreateWindow({
         Title = windowTitle,
@@ -14,7 +14,7 @@ if game.PlaceId == 96063223159256 then
         Theme = "Dark",
         MinimizeKey = Enum.KeyCode.LeftControl
     })
-    
+
     local tabs = {
         Spinning = window:AddTab({Title = "Spinning", Icon = "rotate-ccw"}),
         Players = window:AddTab({Title = "Players", Icon = "users"}),
@@ -23,9 +23,9 @@ if game.PlaceId == 96063223159256 then
         Codes = window:AddTab({Title = "Codes", Icon = "gift"}),
         Settings = window:AddTab({Title = "Settings", Icon = "settings"})
     }
-    
+
     local options = Fluent.Options
-    
+
     local function getHumanoidRootPart()
         local character = game.Players.LocalPlayer.Character
         if character then
@@ -33,7 +33,7 @@ if game.PlaceId == 96063223159256 then
         end
         return nil
     end
-    
+
     -- Auto Grip NPCs toggle
     local autoGripNPCsEnabled = false
     tabs.NPCs:AddToggle("AutoGripToggle", {
@@ -47,7 +47,7 @@ if game.PlaceId == 96063223159256 then
                 local player = game.Players.LocalPlayer
                 local hrp = getHumanoidRootPart()
                 local livesFolder = workspace:FindFirstChild("Lives")
-                
+
                 if hrp and livesFolder then
                     local closestNPC, shortestDistance = nil, math.huge
                     for _, npc in ipairs(livesFolder:GetChildren()) do
@@ -60,7 +60,7 @@ if game.PlaceId == 96063223159256 then
                             end
                         end
                     end
-                    
+
                     if closestNPC then
                         local args = {"Kill", closestNPC, hrp.Position + Vector3.new(1, 2, 0)}
                         for _ = 1, 3 do
@@ -73,11 +73,11 @@ if game.PlaceId == 96063223159256 then
             end
         end)
     end)
-    
+
     -- Auto Grip Players toggle
     local autoGripPlayersEnabled = false
     local whitelist = {["KINcAgU"] = true, ["topaisrare"] = true, ["xylrr"] = true}
-    
+
     tabs.Players:AddToggle("AutoGripPlayersToggle", {
         Title = "Auto Grip Players",
         Default = false,
@@ -102,7 +102,7 @@ if game.PlaceId == 96063223159256 then
                             end
                         end
                     end
-                    
+
                     if targetPlayerCharacter then
                         local args = {"Kill", targetPlayerCharacter, hrp.Position + Vector3.new(1, 2, 0)}
                         localPlayer.Character.Scripts.Server.Grip.Event:FireServer(unpack(args))
@@ -112,7 +112,7 @@ if game.PlaceId == 96063223159256 then
             end
         end)
     end)
-    
+
     -- Auto Meditate toggle
     tabs.Meditation:AddToggle("AutoMeditateToggle", {
         Title = "Auto Meditate",
@@ -130,7 +130,7 @@ if game.PlaceId == 96063223159256 then
             end
         end)
     end)
-    
+
     -- Setup SaveManager and InterfaceManager
     SaveManager:SetLibrary(Fluent)
     InterfaceManager:SetLibrary(Fluent)
@@ -140,17 +140,16 @@ if game.PlaceId == 96063223159256 then
     SaveManager:SetFolder("FluentScriptHub/specific-game")
     InterfaceManager:BuildInterfaceSection(tabs.Settings)
     SaveManager:BuildConfigSection(tabs.Settings)
-    
+
     window:SelectTab(1)
-    
+
     Fluent:Notify({
         Title = "Fluent",
         Content = "Script Loaded Successfully!",
         Duration = 8
     })
-    
-    SaveManager:LoadAutoloadConfig()
 
+    SaveManager:LoadAutoloadConfig()
 
     -- ====== START OF NEW CODE ======
     local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -166,6 +165,8 @@ if game.PlaceId == 96063223159256 then
 
     -- Auto Spin variables
     local autoSpinEnabled = false
+    local autoSpinFamilyEnabled = false
+    local autoSpinTraitEnabled = false
     local selectedFamilies = {}
     local selectedTraits = {}
 
@@ -178,22 +179,21 @@ if game.PlaceId == 96063223159256 then
     local function spinForCategories()
         local spinRemote = ReplicatedStorage:WaitForChild("RemoteEvents"):WaitForChild("Spin")
         while autoSpinEnabled and not Fluent.Unloaded do
-            -- Spin for families if any selected
-            if next(selectedFamilies) then
+            if autoSpinFamilyEnabled and next(selectedFamilies) then
                 spinRemote:FireServer("Family")
                 task.wait(7.5)
                 local familyValue = LocalPlayer:FindFirstChild("Family") and LocalPlayer.Family.Value or ""
                 for _, fam in ipairs(selectedFamilies) do
                     if familyValue:find(fam) then
                         autoSpinEnabled = false
+                        autoSpinFamilyEnabled = false
                         Fluent:Notify({Title = "Family Match", Content = "You rolled family: "..fam, Duration = 5})
                         break
                     end
                 end
             end
 
-            -- Spin for traits if any selected
-            if autoSpinEnabled and next(selectedTraits) then
+            if autoSpinTraitEnabled and next(selectedTraits) then
                 spinRemote:FireServer("Trait")
                 task.wait(7.5)
                 local traitStat = LocalPlayer:FindFirstChild("Player Stats") and LocalPlayer["Player Stats"]:FindFirstChild("Trait")
@@ -201,6 +201,7 @@ if game.PlaceId == 96063223159256 then
                 for _, trait in ipairs(selectedTraits) do
                     if traitValue:find(trait) then
                         autoSpinEnabled = false
+                        autoSpinTraitEnabled = false
                         Fluent:Notify({Title = "Trait Match", Content = "You rolled trait: "..trait, Duration = 5})
                         break
                     end
@@ -241,17 +242,30 @@ if game.PlaceId == 96063223159256 then
         end
     end)
 
-    tabs.Spinning:AddToggle("AutoSpinToggle", {
-        Title = "Auto Spin",
-        Description = "Starts spinning for selected families and traits",
+    -- Separate toggles
+    tabs.Spinning:AddToggle("AutoSpinFamilyToggle", {
+        Title = "Auto Spin Family",
+        Description = "Spins for selected families only",
         Default = false
     }):OnChanged(function(state)
-        autoSpinEnabled = state
-        if state then
+        autoSpinFamilyEnabled = state
+        autoSpinEnabled = autoSpinFamilyEnabled or autoSpinTraitEnabled
+        if autoSpinEnabled then
             task.spawn(spinForCategories)
         end
     end)
 
+    tabs.Spinning:AddToggle("AutoSpinTraitToggle", {
+        Title = "Auto Spin Trait",
+        Description = "Spins for selected traits only",
+        Default = false
+    }):OnChanged(function(state)
+        autoSpinTraitEnabled = state
+        autoSpinEnabled = autoSpinFamilyEnabled or autoSpinTraitEnabled
+        if autoSpinEnabled then
+            task.spawn(spinForCategories)
+        end
+    end)
 
     -- Auto Redeem Spin Codes Toggle in Codes Tab
     tabs.Codes:AddToggle("AutoRedeemSpin", {
