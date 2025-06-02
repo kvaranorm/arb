@@ -117,7 +117,7 @@ if game.PlaceId == 96063223159256 then
     tabs.Meditation:AddToggle("AutoMeditateToggle", {
         Title = "Auto Meditate",
         Default = false,
-        Description = "Automatically meditates for you !!DISCLAIMER!! YOU HAVE TO SIT ON A MAT AND CLICK MEDITATE THEN TURN IT ON"
+        Description = "Automatically meditates for you !!DISCLAIMER!! THIS IS STILL BUGGY, SO WHEN YOU GET TO ENOUGH STAMINA REJOIN TO STOP MEDITATING"
     }):OnChanged(function(enabled)
         task.spawn(function()
             while enabled do
