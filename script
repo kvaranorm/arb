@@ -1,1 +1,441 @@
-return(function(...)local V={"6XERhvO4bZiVmqi5u7==";"93sa93ys";"H3tahvj+A4yw9/OsmLjIn/tKmvtYmN6GuXzR","nqiV9/sYbZQamk==";"kv6+u+xsmqs+9vOs6qiNm3ys","H36Gm/t+AqmRu/sGh/6YAqQpmLj+bZQrnXS7nq07b5jru1jZu5AGAXOfm/B7nqiNm3ysAq6R9377b36V9vERnq6GCoB=","HZ6zm/6dAqQGuLjYbqspAqtwmq6YAqQxnqid9vOr93QGuXz7u3MKmk==";"//ixAXEwuqysmLjZ9/xruXzWAe==","I/QNuZs+n/Os","OZQdh/yMA4xRnqtf";"oqQd9k==","Iq6rmZipmV==","O36+AQnRnq6aA4ERbNERm3H=";"HqyRC/6abV==";"O/Qanq77IqQxuZtfAQtKbZiGue==","OZyxm/M+";"HZ6zm/6dk3izmk==","k3yr93G7mZiaA4yRnZ47Iqspmk==","Iv6Gnqz=";"H3sWmk==";"HZ6du5OsOvmsuNk=","63Q+mvA7kZQabZQNmojI95EwuqV=";"kv6+uxEsmq6su6tVh/B=","6ZQGn/6Y","bZ65bZs+nqspm3xRC/Esb3iwu7==";"H5616qs+uqH=","Oq6RmqyM","H36anZ6a","IsjPbV==";"OZyxm/M+H3tahvj+oX61","I/6zhvORnqH=","k/saAQOwbZMRmq07H3tau3yG";"kv6+uajom/Osm/+7O/ysu/6pnLjPu3OsbV==","bZi+9vOsc/tKnV==","nvtsbNS=";"O5Erbe==","k3Rwu5tsAXOa9/s+baj+uajYbqspAqmwb1efuv6GnqsVuqH79/yGu5nsmLz=";"hXO+bXSWcaiNhvOfn/Ap93idc3ORn3szcvtKbZsVnXSwOZyxm/M+c5Esuq6Rb36Yc3yRnq6YnLizu5npuqiRmLid9/spcZyx9k==","O36+AQnRnq6aAQnRnZH=";"6ZQGn/H=";"OZsamk==";"H36Gm/t+AQOa9/s+bV==";"6XERhvk7I/Q+937=";"6qs+uqH=";"H5jruZMruZb=";"H5jRuvS7m5ErbLjwu1jpm/Qamvt+AXjG9vssb1jpu5k7h/B7n3Rrnq6Ghvt+AXnrnqRru1eaSLjYnX6zbV==","63Q+mvA=";"kv6+uajom/Osm/+7H5jru1jPu3OsbV==";"//Q8u3OR";"hXO+bXSWcaia9vbpm3s+hX61nvtsbZtwuNOsuNkp93idc3ORn3szcvtKbZsVnXSwOZyxm/M+c3xRb5Osb1ijmqOwuNSwH3Q3mHxRuZQNmvApuX6R","kv6+uajIbqspA4mRu/sGCk==","6qQabZywhV==","I/sph/xrCZ6cmvz=","H36Gm/t+Aq6Gm/xsuNk7nq07b5OwbLjRnvOwAXEsmq6suk==";"//ixAXEwuqysmLj+bZQrnPf7","kv6+u+nahvjHu3nNuqH=","H36Gm/t+A4mRu/sGh/6Y","9Nz7CXsauV==";"H36Gm/t+AQORbZnsnLjQuq6dm/M+","k3yr93G7mZiaA4Qrb1jHu5Ep9/OwAQtKbZiGue==";"H36+nqspm5S=","O/ysu/6pnQEsbZiGuQsRCk==";"SK6IbqspbxsRCk==","I/6zhvORnqswu7==","k3izmvS=";"k3yr93G7mZiaA46RbNOfA4yRn/MKhLjI95EwuqV=";"k/taC/yr9V==";"OvmsuNk=";"O/ysu/6pnLjt9vOKhe==","HqiYhvOru3B=","","6/MGu3Qzm/k=","HqyRC/6aO56r";"OZyxm/M+H3tahvj+oX61c5tVm/trmZsKc/nRu/H=","OZQdh/yM";"OvQxhve=","HqyRC/6aAQt+9vOY";"HZ6du5OsOvmsuNOY","k3yr93G7mZiaAQnRnq6aA4ERbNERm3H7H3tau3yG","kv6+uxtVh/MHbZQrnQOwm3nGmk==","o3sGue==";"H3tahvj+bV==";"k3yr93G7mZiaAQnRnq6aAQnRnZH7H3tau3yG";"nvtsb7==","kZywu3k7O5ER91jI95EwuqV=","IqQ39ojSh/MsAQtKbZiGue==";"HqyR936Eme==","o36Mk3izmk==","b5jRn3B=";"//ixAqnwnLjsuq6dm/M+l1e=","kv6+uajXbZsVA4Mkk5S=","6qRsu/H=";"o/M3m/M+u5EMH5OwbZH=";"O36+A46RbNOfA4yRn/MKhe==","Iq6Zn4twuNOau3V=";"HXEwmqsNCk==";"k/sa";"H3tau3yGbV==","kv6+u+nahvjkuqQMmvEY6qiNm3ys","6XERhvk=","mZyRu/6whqi+u/Qp";"IqiW9/z=";"H5ORbNk=","H5jruNS7u3MGCojZu5A7b36Gm/t+m/k7nXERhvOY","k3QGuqER93G=","k3idmvk7oZQ1AQtKbZiGue==";"O36+A4twu/6+A4rR97==";"H5jruNS7u3MGCojZu5A7b36Gm/t+m/k7mZQdh/yrmvS=";"hXO+bXSWcaia9vbpm3s+hX61nvtsbZtwuNOsuNkp93idc3ORn3szcvtKbZsVnXSwOZyxm/M+c3xRb5Osb1ijmqOwuNSwo/M+mvEZ9/tsI/Qp9/nsb1MGn/4=","kv6+uajIbqspAQtsnXOruZnY","H5jru7==","O5ErbXS7uZ6RbZ6YnLjlH4S7bZ6Vm/Q+m/OGCk==","kv6+u3xRnqsK9/yGCojdm/OrnqQ+mvS7mZiaAXswnk==";"63Q+mvA763Q3mojI95EwuqV=";"HZ6VuqsK9vOsmQt+u5ERm3H=","k3yr93G7mZiaA4twu/6+A4rR91jI95EwuqV=","k3yr93G7mZiaA4EGu3izA4na9/A7H3tau3yG";"k3Rwu5tsAqmRu/sGh/6YAXOwAXtVh/B7mZiaALRdn/y+hvjGmojRuqywn36zDk==","ovOsuk==";"O36+A4Qrb1jHu5Ep9/Ow";"kv6+uajtm/OrnqQ+mk==";"O5sRnXtw";"O/ysu/6pn4Oau5jzu5np","kv6+uxEsmq6suH6Gm/xsuNk=";"O36+A4EGu3izA4na9/A=";"kv6+uajIbqspAQOa9/s+","k3idbqysnqH=";"uZ65";"k3ipnq6pne==";"k3RRbZQKnq6a","o/twu7==","b36+nqspm5S=","6qQ163sznq7=","k/OJnvt+","HZ6zm/6dAq6Gm/xsuNk793izmvS7n/M+h/V7nqQam36+Aq6Gm/xsuNk7hvS7bZiGuq6z";"OX6a9vOru3B=","kvOfuq6+mk==";"Iqs3mvS=";"h/MYmvE+","HZ6Nn/yRbzMRnqswuzMV9V==","9ZiwhV==";"kZ6pmqspmV==","6ZQRu7==";"kv6+uxtVh/Mq9/xruXsHu3nNuqH=";"H3iWh/B=","oX6d9/Mwh/Oou3i+HqQane==";"Oq6Y95ErbXOru3B=";"OqQahV==","I5j+h/ipbV==","IqiK9/ykuqQMmvA=";"k5Es9vOsA4dsCk==";"OZQdh/yMOXEwbqOwn3B=","o+sl9+QN6k==","mNEwuHiZmNtsne==";"6qQGm/M+m/k=";"Ovmrue==","m3sZne==","k/nruqH=";"hX6Nmk==","n3Qrne==","Oq6Z9v6Gne==";"CXsGbNA=","Iqsd97==","O/Qanq7=";"IZQdmk==","k6ELl1jI95ErbXk7nKA7DQOsb5OruZbr","nqRRnXtau56NhqExmqOM","kv6+uajXbZsVAQjG9vssbNS=","O36+A4yRnZ47Iqspmk==","bZQpmqid","n3RsbZ6YnqRs9vmRnqQaH5jruNS="}for R,W in ipairs({{1;171},{1;10},{11;171}})do while W[1]<W[2]do V[W[1]],V[W[2]],W[1],W[2]=V[W[2]],V[W[1]],W[1]+1,W[2]-1 end end local function R(R)return V[R-44754]end do local R=string.sub local W=type local S={E=9,["2"]=62;I=19;["8"]=43;e=0;b=28;l=14;z=36;d=45,["4"]=4,R=33;Y=51,c=11,h=26,J=42,["+"]=52;["0"]=60;V=48,P=3,H=20;j=1,x=53;u=27;T=59,L=2,K=35,["1"]=34;f=40,n=29;t=13;i=61;D=10,G=44,X=7;["9"]=24;a=50,["6"]=21,k=16;q=6;["7"]=32;W=58;v=23;["3"]=54;p=46,o=18;w=47;y=49;g=31,C=30,Z=38,Q=5,s=37;F=15;B=56;M=57;O=17;r=41;U=63;["/"]=22,A=8;["5"]=55;S=12,N=39;m=25}local Y=V local k=math.floor local K=table.insert local a=string.char local q=string.len local z=table.concat for V=1,#Y,1 do local j=Y[V]if W(j)=="string"then local W=q(j)local O={}local m=1 local U=0 local x=0 while m<=W do local V=R(j,m,m)local Y=S[V]if Y then U=U+Y*64^(3-x)x=x+1 if x==4 then x=0 local V=k(U/65536)local R=k((U%65536)/256)local W=U%256 K(O,a(V,R,W))U=0 end elseif V=="="then K(O,a(k(U/65536)))if m>=W or R(j,m+1,m+1)~="="then K(O,a(k((U%65536)/256)))end break end m=m+1 end Y[V]=z(O)end end end if game[R(44851)]==96063223159256 then local V=(loadstring(game:HttpGet(R(44802))))()local W=(loadstring(game:HttpGet(R(44814))))()local S=(loadstring(game:HttpGet(R(44873))))()local Y=V:CreateWindow({[R(44808)]=R(44759);[R(44790)]=R(44822);[R(44897)]=160,[R(44784)]=UDim2[R(44918)](580,460);[R(44831)]=true,[R(44856)]=R(44912),[R(44817)]=Enum[R(44852)][R(44859)]})local k={[R(44809)]=Y:AddTab({[R(44808)]=R(44809);[R(44895)]=R(44798)}),[R(44778)]=Y:AddTab({[R(44808)]=R(44778);[R(44895)]=R(44799)}),[R(44828)]=Y:AddTab({[R(44808)]=R(44828),[R(44895)]=R(44766)});[R(44793)]=Y:AddTab({[R(44808)]=R(44793),[R(44895)]=R(44848)}),[R(44862)]=Y:AddTab({[R(44808)]=R(44862);[R(44895)]=R(44905)}),[R(44829)]=Y:AddTab({[R(44808)]=R(44829);[R(44895)]=R(44921)}),[R(44825)]=Y:AddTab({[R(44808)]=R(44825),[R(44895)]=R(44896)})}local K=V[R(44913)]local a=game:GetService(R(44879))local q=game[R(44778)][R(44914)]local z={R(44813),R(44866),R(44776);R(44816),R(44909),R(44775),R(44886);R(44907)}local j={R(44922),R(44791);R(44920);R(44901);R(44756);R(44860);R(44919)}local O={R(44811),R(44757),R(44861);R(44805)}local m={R(44764);R(44827)}local U={R(44865),R(44760),R(44789);R(44764);R(44826),R(44827)}local function x()local V=game[R(44778)][R(44914)][R(44894)]return V and V:FindFirstChild(R(44910))end local n=false;(k[R(44793)]:AddToggle(R(44820),{[R(44808)]=R(44855);[R(44925)]=false;[R(44911)]=R(44876)})):OnChanged(function(V)n=V task[R(44853)](function()while n do local V=game[R(44778)][R(44914)]local W=x()local S=workspace:FindFirstChild(R(44902))if W and S then local Y,k=nil,math[R(44923)]for V,S in ipairs(S:GetChildren())do local K=S:FindFirstChild(R(44910))if S[R(44758)]==R(44904)and K then local V=(K[R(44834)]-W[R(44834)])[R(44773)]if V<k then Y=S k=V end end end if Y then local S={R(44845),Y,W[R(44834)]+Vector3[R(44892)](1,2,0)}for W=1,3,1 do V[R(44894)][R(44846)][R(44792)][R(44800)][R(44832)]:FireServer(unpack(S))wait()end end end wait()end end)end)local X=false local r={[R(44917)]=true,[R(44768)]=true,[R(44755)]=true};(k[R(44778)]:AddToggle(R(44863),{[R(44808)]=R(44761);[R(44925)]=false,[R(44911)]=R(44810)})):OnChanged(function(V)X=V task[R(44853)](function()while X do local V=game[R(44778)][R(44914)]local W=x()if not W then task[R(44924)](.5)else local S,Y=nil,20 for k,K in ipairs(game[R(44778)]:GetPlayers())do if K~=V and(not r[K[R(44758)]]and(K[R(44894)]and K[R(44894)]:FindFirstChild(R(44910))))then local V=K[R(44894)][R(44910)]local k=(V[R(44834)]-W[R(44834)])[R(44773)]if k<=Y then S=K[R(44894)]Y=k end end end if S then local Y={R(44845);S;W[R(44834)]+Vector3[R(44892)](1,2,0)}V[R(44894)][R(44846)][R(44792)][R(44800)][R(44832)]:FireServer(unpack(Y))end task[R(44924)](.1)end end end)end);(k[R(44828)]:AddToggle(R(44769),{[R(44808)]=R(44885);[R(44925)]=false;[R(44911)]=R(44877)})):OnChanged(function(V)task[R(44853)](function()while V do game[R(44879)][R(44842)][R(44795)]:FireServer(R(44867))for V=1,5,1 do game[R(44879)][R(44842)][R(44915)]:FireServer(R(44891))task[R(44924)](.1)end task[R(44924)](1.5)end end)end)local M=false local Q=false local p={}local y={}local function d()local W=(a:WaitForChild(R(44842))):WaitForChild(R(44875))while M and not V[R(44836)]do W:FireServer(R(44839))task[R(44924)](7.5)local S=q:FindFirstChild(R(44839))and q[R(44839)][R(44804)]or R(44835)for W,Y in ipairs(p)do if S:find(Y)then M=false V:Notify({[R(44808)]=R(44774);[R(44893)]=R(44772)..Y,[R(44900)]=5})return end end task[R(44924)](.5)end end local function J()local W=(a:WaitForChild(R(44842))):WaitForChild(R(44875))while Q and not V[R(44836)]do W:FireServer(R(44864))task[R(44924)](7.5)local S=q:FindFirstChild(R(44841))and q[R(44841)]:FindFirstChild(R(44864))local Y=S and S[R(44804)]or R(44835)for W,S in ipairs(y)do if Y:find(S)then Q=false V:Notify({[R(44808)]=R(44807),[R(44893)]=R(44819)..S,[R(44900)]=5})return end end task[R(44924)](.5)end end k[R(44809)]:AddParagraph({[R(44808)]=R(44874),[R(44893)]=R(44770)});(k[R(44809)]:AddDropdown(R(44916),{[R(44808)]=R(44821);[R(44911)]=R(44882),[R(44788)]=z,[R(44783)]=true,[R(44925)]={}})):OnChanged(function(V)p={}for V,W in pairs(V)do if W then table[R(44903)](p,V)end end end);(k[R(44809)]:AddDropdown(R(44765),{[R(44808)]=R(44806);[R(44911)]=R(44801);[R(44788)]=j;[R(44783)]=true,[R(44925)]={}})):OnChanged(function(V)y={}for V,W in pairs(V)do if W then table[R(44903)](y,V)end end end);(k[R(44809)]:AddToggle(R(44908),{[R(44808)]=R(44815);[R(44911)]=R(44872);[R(44925)]=false})):OnChanged(function(V)M=V if V then task[R(44853)](d)end end);(k[R(44809)]:AddToggle(R(44844),{[R(44808)]=R(44890),[R(44911)]=R(44868);[R(44925)]=false})):OnChanged(function(V)Q=V if V then task[R(44853)](J)end end);(k[R(44829)]:AddToggle(R(44787),{[R(44808)]=R(44812);[R(44911)]=R(44771),[R(44925)]=false})):OnChanged(function(V)if V then task[R(44853)](function()for V,W in ipairs(m)do a[R(44842)][R(44781)]:InvokeServer(W)task[R(44924)](.5)end end)end end)local t=O[1];(k[R(44829)]:AddDropdown(R(44887),{[R(44808)]=R(44823);[R(44911)]=R(44818),[R(44788)]=O;[R(44783)]=false;[R(44925)]=1})):OnChanged(function(V)t=V end);(k[R(44829)]:AddToggle(R(44888),{[R(44808)]=R(44797),[R(44911)]=R(44899),[R(44925)]=false})):OnChanged(function(W)if W then task[R(44853)](function()while W do a[R(44842)][R(44781)]:InvokeServer(U[math[R(44763)](1,#U)])task[R(44924)](1)local W=q:FindFirstChild(R(44906))and q[R(44906)][R(44804)]or R(44835)if W==t then V:Notify({[R(44808)]=R(44833),[R(44893)]=R(44854)..t;[R(44900)]=5})break end end end)end end)k[R(44862)]:AddButton({[R(44808)]=R(44803);[R(44911)]=R(44847),[R(44869)]=function()local V=0 local W while true do if V==0 then W={R(44840);{[R(44883)]=R(44878)}};(((((game:GetService(R(44778)))[R(44914)]:WaitForChild(R(44837))):WaitForChild(R(44857))):WaitForChild(R(44898))):WaitForChild(R(44785))):FireServer(unpack(W))break end end end})k[R(44862)]:AddButton({[R(44808)]=R(44884);[R(44911)]=R(44824),[R(44869)]=function()local V=0 local W while true do if V==0 then W={R(44840),{[R(44883)]=R(44796)}};(((((game:GetService(R(44778)))[R(44914)]:WaitForChild(R(44837))):WaitForChild(R(44857))):WaitForChild(R(44898))):WaitForChild(R(44785))):FireServer(unpack(W))break end end end})k[R(44862)]:AddButton({[R(44808)]=R(44871);[R(44911)]=R(44880);[R(44869)]=function()local V=0 local W while true do if V==0 then W={R(44840),{[R(44883)]=R(44870)}};(((((game:GetService(R(44778)))[R(44914)]:WaitForChild(R(44837))):WaitForChild(R(44857))):WaitForChild(R(44898))):WaitForChild(R(44785))):FireServer(unpack(W))break end end end})k[R(44862)]:AddButton({[R(44808)]=R(44777);[R(44911)]=R(44843);[R(44869)]=function()local V=0 local W while true do if V==0 then W={R(44840),{[R(44883)]=R(44786)}};(((((game:GetService(R(44778)))[R(44914)]:WaitForChild(R(44837))):WaitForChild(R(44857))):WaitForChild(R(44898))):WaitForChild(R(44785))):FireServer(unpack(W))break end end end})k[R(44862)]:AddButton({[R(44808)]=R(44858),[R(44911)]=R(44830);[R(44869)]=function()local V=0 local W while true do if V==0 then W={R(44840),{[R(44883)]=R(44779)}};(((((game:GetService(R(44778)))[R(44914)]:WaitForChild(R(44837))):WaitForChild(R(44857))):WaitForChild(R(44898))):WaitForChild(R(44785))):FireServer(unpack(W))break end end end})k[R(44862)]:AddButton({[R(44808)]=R(44889),[R(44911)]=R(44881);[R(44869)]=function()local V=0 local W while true do if V==0 then W={R(44840);{[R(44883)]=R(44849)}};(((((game:GetService(R(44778)))[R(44914)]:WaitForChild(R(44837))):WaitForChild(R(44857))):WaitForChild(R(44898))):WaitForChild(R(44785))):FireServer(unpack(W))break end end end})k[R(44862)]:AddButton({[R(44808)]=R(44762),[R(44911)]=R(44782),[R(44869)]=function()local V=0 local W while true do if V==0 then W={R(44840),{[R(44883)]=R(44850)}};(((((game:GetService(R(44778)))[R(44914)]:WaitForChild(R(44837))):WaitForChild(R(44857))):WaitForChild(R(44898))):WaitForChild(R(44785))):FireServer(unpack(W))break end end end})W:SetLibrary(V)S:SetLibrary(V)W:IgnoreThemeSettings()W:SetIgnoreIndexes({})S:SetFolder(R(44794))W:SetFolder(R(44838))S:BuildInterfaceSection(k[R(44825)])W:BuildConfigSection(k[R(44825)])Y:SelectTab(1)V:Notify({[R(44808)]=R(44780);[R(44893)]=R(44767),[R(44900)]=8})W:LoadAutoloadConfig()end end)(...)
+if game.PlaceId == 96063223159256 then
+    -- Load libraries
+    local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+    local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
+    local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
+
+    local window = Fluent:CreateWindow({
+        Title = "ARB: Script v2 (Testing)",
+        SubTitle = "by xyro",
+        TabWidth = 160,
+        Size = UDim2.fromOffset(580, 460),
+        Acrylic = true,
+        Theme = "Dark",
+        MinimizeKey = Enum.KeyCode.LeftControl
+    })
+
+    local tabs = {
+        Spinning = window:AddTab({Title = "Spinning", Icon = "rotate-ccw"}),
+        Players = window:AddTab({Title = "Players", Icon = "users"}),
+        Meditation = window:AddTab({Title = "Meditation", Icon = "circle"}),
+        NPCs = window:AddTab({Title = "NPCs", Icon = "user"}),
+        Scrolls = window:AddTab({Title = "Scrolls", Icon = "book"}),
+        Codes = window:AddTab({Title = "Codes", Icon = "gift"}),
+        Settings = window:AddTab({Title = "Settings", Icon = "settings"})
+    }
+
+    local options = Fluent.Options
+    local ReplicatedStorage = game:GetService("ReplicatedStorage")
+    local LocalPlayer = game.Players.LocalPlayer
+
+    local Families = {"Yakoda", "Lozai", "Leifong", "Tarrlok", "Sozin", "Hama", "Gyatso", "Vaan"}
+    local Traits = {"Agile", "Deadly", "Evil", "Athlete", "Limb", "Prodigy", "Talented"}
+    local Elements = {"Water", "Earth", "Air", "Fire"}
+    local SpinCodes = {"wherestheavatarSpins", "25SpinsYay"}
+    local ElementCodes = {"flameohotman", "thatsroughbuddy", "rewrittingmaybesoon", "wherestheavatarSpins", "ElementRerollYay", "25SpinsYay"}
+
+    -- Auto Grip NPCs
+    local function getHumanoidRootPart()
+        local character = game.Players.LocalPlayer.Character
+        return character and character:FindFirstChild("HumanoidRootPart")
+    end
+
+    local autoGripNPCsEnabled = false
+    tabs.NPCs:AddToggle("AutoGripToggle", {
+        Title = "Auto Grip NPCs",
+        Default = false,
+        Description = "Grips nearest NPC repeatedly"
+    }):OnChanged(function(enabled)
+        autoGripNPCsEnabled = enabled
+        task.spawn(function()
+            while autoGripNPCsEnabled do
+                local player = game.Players.LocalPlayer
+                local hrp = getHumanoidRootPart()
+                local livesFolder = workspace:FindFirstChild("Lives")
+
+                if hrp and livesFolder then
+                    local closestNPC, shortestDistance = nil, math.huge
+                    for _, npc in ipairs(livesFolder:GetChildren()) do
+                        local npcHRP = npc:FindFirstChild("HumanoidRootPart")
+                        if npc.Name == "RegularNationNpc" and npcHRP then
+                            local dist = (npcHRP.Position - hrp.Position).Magnitude
+                            if dist < shortestDistance then
+                                closestNPC = npc
+                                shortestDistance = dist
+                            end
+                        end
+                    end
+
+                    if closestNPC then
+                        local args = {"Kill", closestNPC, hrp.Position + Vector3.new(1, 2, 0)}
+                        for _ = 1, 3 do
+                            player.Character.Scripts.Server.Grip.Event:FireServer(unpack(args))
+                            wait()
+                        end
+                    end
+                end
+                wait()
+            end
+        end)
+    end)
+
+    -- Auto Grip Players
+    local autoGripPlayersEnabled = false
+    local whitelist = {["KINcAgU"] = true, ["topaisrare"] = true, ["xylrr"] = true}
+
+    tabs.Players:AddToggle("AutoGripPlayersToggle", {
+        Title = "Auto Grip Players",
+        Default = false,
+        Description = "Spams grip on nearest player not in whitelist within 20 studs"
+    }):OnChanged(function(enabled)
+        autoGripPlayersEnabled = enabled
+        task.spawn(function()
+            while autoGripPlayersEnabled do
+                local localPlayer = game.Players.LocalPlayer
+                local hrp = getHumanoidRootPart()
+                if not hrp then
+                    task.wait(0.5)
+                else
+                    local targetPlayerCharacter, closestDistance = nil, 20
+                    for _, player in ipairs(game.Players:GetPlayers()) do
+                        if player ~= localPlayer and not whitelist[player.Name] and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                            local playerHRP = player.Character.HumanoidRootPart
+                            local dist = (playerHRP.Position - hrp.Position).Magnitude
+                            if dist <= closestDistance then
+                                targetPlayerCharacter = player.Character
+                                closestDistance = dist
+                            end
+                        end
+                    end
+
+                    if targetPlayerCharacter then
+                        local args = {"Kill", targetPlayerCharacter, hrp.Position + Vector3.new(1, 2, 0)}
+                        localPlayer.Character.Scripts.Server.Grip.Event:FireServer(unpack(args))
+                    end
+                    task.wait(0.1)
+                end
+            end
+        end)
+    end)
+
+    -- Auto Meditate
+    tabs.Meditation:AddToggle("AutoMeditateToggle", {
+        Title = "Auto Meditate",
+        Default = false,
+        Description = "Automatically meditates for you"
+    }):OnChanged(function(enabled)
+        task.spawn(function()
+            while enabled do
+                game.ReplicatedStorage.RemoteEvents.Meditate:FireServer("Start")
+                for _ = 1, 5 do
+                    game.ReplicatedStorage.RemoteEvents["Create Key"]:FireServer("Complete")
+                    task.wait(0.1)
+                end
+                task.wait(1.5)
+            end
+        end)
+    end)
+
+    -- Auto Spin
+    local autoSpinFamilyEnabled = false
+    local autoSpinTraitEnabled = false
+    local selectedFamilies = {}
+    local selectedTraits = {}
+
+    local function spinForFamily()
+        local spinRemote = ReplicatedStorage:WaitForChild("RemoteEvents"):WaitForChild("Spin")
+        while autoSpinFamilyEnabled and not Fluent.Unloaded do
+            spinRemote:FireServer("Family")
+            task.wait(7.5)
+            local familyValue = LocalPlayer:FindFirstChild("Family") and LocalPlayer.Family.Value or ""
+            for _, fam in ipairs(selectedFamilies) do
+                if familyValue:find(fam) then
+                    autoSpinFamilyEnabled = false
+                    Fluent:Notify({Title = "Family Match", Content = "You rolled family: " .. fam, Duration = 5})
+                    return
+                end
+            end
+            task.wait(0.5)
+        end
+    end
+
+    local function spinForTrait()
+        local spinRemote = ReplicatedStorage:WaitForChild("RemoteEvents"):WaitForChild("Spin")
+        while autoSpinTraitEnabled and not Fluent.Unloaded do
+            spinRemote:FireServer("Trait")
+            task.wait(7.5)
+            local traitStat = LocalPlayer:FindFirstChild("Player Stats") and LocalPlayer["Player Stats"]:FindFirstChild("Trait")
+            local traitValue = traitStat and traitStat.Value or ""
+            for _, trait in ipairs(selectedTraits) do
+                if traitValue:find(trait) then
+                    autoSpinTraitEnabled = false
+                    Fluent:Notify({Title = "Trait Match", Content = "You rolled trait: " .. trait, Duration = 5})
+                    return
+                end
+            end
+            task.wait(0.5)
+        end
+    end
+
+    tabs.Spinning:AddParagraph({Title = "Auto Spin Settings", Content = "Select families and traits to spin for, then toggle each separately."})
+
+    tabs.Spinning:AddDropdown("FamilyDropdown", {
+        Title = "Select Families",
+        Description = "Choose families to spin for (multiple allowed)",
+        Values = Families,
+        Multi = true,
+        Default = {}
+    }):OnChanged(function(value)
+        selectedFamilies = {}
+        for fam, selected in pairs(value) do
+            if selected then table.insert(selectedFamilies, fam) end
+        end
+    end)
+
+    tabs.Spinning:AddDropdown("TraitDropdown", {
+        Title = "Select Traits",
+        Description = "Choose traits to spin for (multiple allowed)",
+        Values = Traits,
+        Multi = true,
+        Default = {}
+    }):OnChanged(function(value)
+        selectedTraits = {}
+        for trait, selected in pairs(value) do
+            if selected then table.insert(selectedTraits, trait) end
+        end
+    end)
+
+    tabs.Spinning:AddToggle("AutoSpinFamilyToggle", {
+        Title = "Auto Spin Family",
+        Description = "Spins only for selected families",
+        Default = false
+    }):OnChanged(function(state)
+        autoSpinFamilyEnabled = state
+        if state then task.spawn(spinForFamily) end
+    end)
+
+    tabs.Spinning:AddToggle("AutoSpinTraitToggle", {
+        Title = "Auto Spin Trait",
+        Description = "Spins only for selected traits",
+        Default = false
+    }):OnChanged(function(state)
+        autoSpinTraitEnabled = state
+        if state then task.spawn(spinForTrait) end
+    end)
+
+    tabs.Codes:AddToggle("AutoRedeemSpin", {
+        Title = "Auto Redeem Spin Codes",
+        Description = "Redeem all spin codes automatically once",
+        Default = false
+    }):OnChanged(function(state)
+        if state then
+            task.spawn(function()
+                for _, code in ipairs(SpinCodes) do
+                    ReplicatedStorage.RemoteEvents.RedeemCode:InvokeServer(code)
+                    task.wait(0.5)
+                end
+            end)
+        end
+    end)
+
+    local targetElement = Elements[1]
+
+    tabs.Codes:AddDropdown("ElementDropdown", {
+        Title = "Select Target Element",
+        Description = "Select element to stop auto redeem",
+        Values = Elements,
+        Multi = false,
+        Default = 1
+    }):OnChanged(function(value)
+        targetElement = value
+    end)
+
+    tabs.Codes:AddToggle("AutoRedeemElement", {
+        Title = "Auto Redeem Element Codes",
+        Description = "Redeem element codes until target element is rolled",
+        Default = false
+    }):OnChanged(function(state)
+        if state then
+            task.spawn(function()
+                while state do
+                    ReplicatedStorage.RemoteEvents.RedeemCode:InvokeServer(ElementCodes[math.random(1, #ElementCodes)])
+                    task.wait(1)
+                    local bendingVal = LocalPlayer:FindFirstChild("Bending") and LocalPlayer.Bending.Value or ""
+                    if bendingVal == targetElement then
+                        Fluent:Notify({Title = "Element Match", Content = "You got element: " .. targetElement, Duration = 5})
+                        break
+                    end
+                end
+            end)
+        end
+    end)
+
+   -- Scrolls
+    tabs.Scrolls:AddButton({
+        Title = "Get Water Wave",
+        Description = "Click for Water Wave Scroll",
+        Callback = function()
+            local v23 = 1423 - (630 + 793) -- 0
+            local v24
+            while true do
+                if v23 == 0 then
+                    v24 = {"Equip", {Item = "Water Wave Scroll"}}
+                    game:GetService("Players").LocalPlayer
+                        :WaitForChild("PlayerGui")
+                        :WaitForChild("InventoryStore")
+                        :WaitForChild("Adjust")
+                        :WaitForChild("RemoteEvent")
+                        :FireServer(unpack(v24))
+                    break
+                end
+            end
+        end
+    })
+
+        tabs.Scrolls:AddButton({
+        Title = "Get Air Tornado",
+        Description = "Click for Air Tornado Scroll",
+        Callback = function()
+            local v23 = 1423 - (630 + 793) -- 0
+            local v24
+            while true do
+                if v23 == 0 then
+                    v24 = {"Equip", {Item = "Air Tornado Scroll"}}
+                    game:GetService("Players").LocalPlayer
+                        :WaitForChild("PlayerGui")
+                        :WaitForChild("InventoryStore")
+                        :WaitForChild("Adjust")
+                        :WaitForChild("RemoteEvent")
+                        :FireServer(unpack(v24))
+                    break
+                end
+            end
+        end
+    })
+
+        tabs.Scrolls:AddButton({
+        Title = "Get Comet Jab",
+        Description = "Click for Comet Jab Scroll",
+        Callback = function()
+            local v23 = 1423 - (630 + 793) -- 0
+            local v24
+            while true do
+                if v23 == 0 then
+                    v24 = {"Equip", {Item = "Comet Jab Scroll"}}
+                    game:GetService("Players").LocalPlayer
+                        :WaitForChild("PlayerGui")
+                        :WaitForChild("InventoryStore")
+                        :WaitForChild("Adjust")
+                        :WaitForChild("RemoteEvent")
+                        :FireServer(unpack(v24))
+                    break
+                end
+            end
+        end
+    })
+
+        tabs.Scrolls:AddButton({
+        Title = "Get Water Barrage",
+        Description = "Click for Water Barrage Scroll",
+        Callback = function()
+            local v23 = 1423 - (630 + 793) -- 0
+            local v24
+            while true do
+                if v23 == 0 then
+                    v24 = {"Equip", {Item = "Water Barrage Scroll"}}
+                    game:GetService("Players").LocalPlayer
+                        :WaitForChild("PlayerGui")
+                        :WaitForChild("InventoryStore")
+                        :WaitForChild("Adjust")
+                        :WaitForChild("RemoteEvent")
+                        :FireServer(unpack(v24))
+                    break
+                end
+            end
+        end
+    })
+
+        tabs.Scrolls:AddButton({
+        Title = "Get Earth Launch",
+        Description = "Click for Earth Launch Scroll",
+        Callback = function()
+            local v23 = 1423 - (630 + 793) -- 0
+            local v24
+            while true do
+                if v23 == 0 then
+                    v24 = {"Equip", {Item = "Earth Launch Scroll"}}
+                    game:GetService("Players").LocalPlayer
+                        :WaitForChild("PlayerGui")
+                        :WaitForChild("InventoryStore")
+                        :WaitForChild("Adjust")
+                        :WaitForChild("RemoteEvent")
+                        :FireServer(unpack(v24))
+                    break
+                end
+            end
+        end
+    })
+
+        tabs.Scrolls:AddButton({
+        Title = "Get Blood Grab",
+        Description = "Click for Blood Grab Scroll",
+        Callback = function()
+            local v23 = 1423 - (630 + 793) -- 0
+            local v24
+            while true do
+                if v23 == 0 then
+                    v24 = {"Equip", {Item = "Blood Grab Scroll"}}
+                    game:GetService("Players").LocalPlayer
+                        :WaitForChild("PlayerGui")
+                        :WaitForChild("InventoryStore")
+                        :WaitForChild("Adjust")
+                        :WaitForChild("RemoteEvent")
+                        :FireServer(unpack(v24))
+                    break
+                end
+            end
+        end
+    })
+
+        tabs.Scrolls:AddButton({
+        Title = "Get Lava Line",
+        Description = "Click for Lava Line",
+        Callback = function()
+            local v23 = 1423 - (630 + 793) -- 0
+            local v24
+            while true do
+                if v23 == 0 then
+                    v24 = {"Equip", {Item = "Lava Line Scroll"}}
+                    game:GetService("Players").LocalPlayer
+                        :WaitForChild("PlayerGui")
+                        :WaitForChild("InventoryStore")
+                        :WaitForChild("Adjust")
+                        :WaitForChild("RemoteEvent")
+                        :FireServer(unpack(v24))
+                    break
+                end
+            end
+        end
+    })
+
+    -- Final init
+    SaveManager:SetLibrary(Fluent)
+    InterfaceManager:SetLibrary(Fluent)
+    SaveManager:IgnoreThemeSettings()
+    SaveManager:SetIgnoreIndexes({})
+    InterfaceManager:SetFolder("FluentScriptHub")
+    SaveManager:SetFolder("FluentScriptHub/specific-game")
+    InterfaceManager:BuildInterfaceSection(tabs.Settings)
+    SaveManager:BuildConfigSection(tabs.Settings)
+
+    window:SelectTab(1)
+
+    Fluent:Notify({
+        Title = "Fluent",
+        Content = "Script Loaded Successfully!",
+        Duration = 8
+    })
+
+    SaveManager:LoadAutoloadConfig()
+    
+end
