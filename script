@@ -133,7 +133,7 @@ if game.PlaceId == 96063223159256 then
         end)
     end)
 
-        -- Hitbox Expander
+    -- Hitbox Expander
     local hitboxExpanderEnabled = false
     local hitboxSizeStuds = 8
     local hitboxColor = Color3.fromRGB(255, 0, 0)
@@ -223,6 +223,143 @@ if game.PlaceId == 96063223159256 then
         end)
     end
 
+    -- ESP
+    local playerESPEnabled = false
+    local npcESPEnabled = false
+    local npcESPMaxDistance = 1000
+    local espConnection
+    local playerESPBillboards = {}
+    local npcESPBillboards = {}
+
+    local function removeESPBillboard(mapTable, key)
+        local billboard = mapTable[key]
+        if billboard then
+            billboard:Destroy()
+            mapTable[key] = nil
+        end
+    end
+
+    local function clearESPBillboards(mapTable)
+        for key in pairs(mapTable) do
+            removeESPBillboard(mapTable, key)
+        end
+    end
+
+    local function createESPBillboard(adorneePart, text)
+        local billboard = Instance.new("BillboardGui")
+        billboard.Name = "ESPBillboard"
+        billboard.AlwaysOnTop = true
+        billboard.Size = UDim2.new(0, 120, 0, 30)
+        billboard.StudsOffset = Vector3.new(0, 3, 0)
+        billboard.Adornee = adorneePart
+
+        local label = Instance.new("TextLabel")
+        label.Name = "Label"
+        label.Size = UDim2.new(1, 0, 1, 0)
+        label.BackgroundTransparency = 1
+        label.TextScaled = true
+        label.Font = Enum.Font.GothamBold
+        label.TextStrokeTransparency = 0
+        label.Text = text
+        label.TextColor3 = hitboxColor
+        label.Parent = billboard
+
+        return billboard
+    end
+
+    local function refreshESPColors()
+        for _, billboard in pairs(playerESPBillboards) do
+            local label = billboard:FindFirstChild("Label")
+            if label then
+                label.TextColor3 = hitboxColor
+            end
+        end
+        for _, billboard in pairs(npcESPBillboards) do
+            local label = billboard:FindFirstChild("Label")
+            if label then
+                label.TextColor3 = hitboxColor
+            end
+        end
+    end
+
+    local function updateESPState()
+        if espConnection then
+            espConnection:Disconnect()
+            espConnection = nil
+        end
+
+        if not playerESPEnabled and not npcESPEnabled then
+            clearESPBillboards(playerESPBillboards)
+            clearESPBillboards(npcESPBillboards)
+            return
+        end
+
+        espConnection = RunService.Heartbeat:Connect(function()
+            local localHRP = getHumanoidRootPart()
+
+            if playerESPEnabled then
+                for _, targetPlayer in ipairs(Players:GetPlayers()) do
+                    if targetPlayer ~= LocalPlayer and targetPlayer.Character then
+                        local targetHRP = targetPlayer.Character:FindFirstChild("HumanoidRootPart")
+                        if targetHRP then
+                            local billboard = playerESPBillboards[targetPlayer.Character]
+                            if not (billboard and billboard.Parent == targetHRP) then
+                                removeESPBillboard(playerESPBillboards, targetPlayer.Character)
+                                billboard = createESPBillboard(targetHRP, targetPlayer.Name)
+                                billboard.Parent = targetHRP
+                                playerESPBillboards[targetPlayer.Character] = billboard
+                            end
+                        end
+                    end
+                end
+
+                for character in pairs(playerESPBillboards) do
+                    if not character.Parent then
+                        removeESPBillboard(playerESPBillboards, character)
+                    end
+                end
+            else
+                clearESPBillboards(playerESPBillboards)
+            end
+
+            if npcESPEnabled then
+                local livesFolder = workspace:FindFirstChild("Lives") or workspace:FindFirstChild("lives")
+                if livesFolder and localHRP then
+                    for _, npc in ipairs(livesFolder:GetChildren()) do
+                        if npc.Name == "RegularNationNpc" or npc.Name == "RegulationNationNpc" then
+                            local npcHRP = npc:FindFirstChild("HumanoidRootPart")
+                            if npcHRP then
+                                local withinRange = (npcHRP.Position - localHRP.Position).Magnitude <= npcESPMaxDistance
+                                if withinRange then
+                                    local billboard = npcESPBillboards[npc]
+                                    if not (billboard and billboard.Parent == npcHRP) then
+                                        removeESPBillboard(npcESPBillboards, npc)
+                                        billboard = createESPBillboard(npcHRP, "NPC")
+                                        billboard.Parent = npcHRP
+                                        npcESPBillboards[npc] = billboard
+                                    end
+                                else
+                                    removeESPBillboard(npcESPBillboards, npc)
+                                end
+                            end
+                        end
+                    end
+                else
+                    clearESPBillboards(npcESPBillboards)
+                end
+
+                for npc in pairs(npcESPBillboards) do
+                    if not npc.Parent then
+                        removeESPBillboard(npcESPBillboards, npc)
+                    end
+                end
+            else
+                clearESPBillboards(npcESPBillboards)
+            end
+        end)
+    end
+
+
     tabs.Players:AddToggle("HitboxExpanderToggle", {
         Title = "Hitbox Expander",
         Default = false,
@@ -246,13 +383,14 @@ if game.PlaceId == 96063223159256 then
     end)
 
     tabs.Players:AddColorpicker("HitboxColorPicker", {
-        Title = "Hitbox Color",
+        Title = "Hitbox / ESP Color",
         Default = hitboxColor
     }):OnChanged(function(value)
         hitboxColor = value
         for _, hitboxPart in pairs(expandedHitboxes) do
             updateHitboxProperties(hitboxPart)
         end
+        refreshESPColors()
     end)
 
     tabs.Players:AddSlider("HitboxTransparencySlider", {
@@ -289,6 +427,35 @@ if game.PlaceId == 96063223159256 then
         for _, hitboxPart in pairs(expandedHitboxes) do
             updateHitboxProperties(hitboxPart)
         end
+    end)
+
+    tabs.Players:AddToggle("PlayerESPToggle", {
+        Title = "Player ESP",
+        Default = false,
+        Description = "Shows ESP nametags for players"
+    }):OnChanged(function(enabled)
+        playerESPEnabled = enabled
+        updateESPState()
+    end)
+
+    tabs.NPCs:AddToggle("NpcESPToggle", {
+        Title = "NPC Esp",
+        Default = false,
+        Description = "Shows NPC nametag ESP"
+    }):OnChanged(function(enabled)
+        npcESPEnabled = enabled
+        updateESPState()
+    end)
+
+    tabs.NPCs:AddSlider("NpcESPRangeSlider", {
+        Title = "NPC ESP Max Distance",
+        Description = "Shows only NPCs within this range",
+        Default = npcESPMaxDistance,
+        Min = 50,
+        Max = 5000,
+        Rounding = 0
+    }):OnChanged(function(value)
+        npcESPMaxDistance = value
     end)
 
     -- Auto Meditate
