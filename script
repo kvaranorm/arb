@@ -48,7 +48,34 @@ if game.PlaceId == 96063223159256 then
     -- =======================
 
     local autoGripNPCsEnabled = false
-    local gripConnection
+    local npcGripInterval = 0.18
+    local npcGripBurstCount = 2
+    local npcGripMaxDistance = 45
+
+    local function getClosestGripNPC(maxDistance)
+        local hrp = getHumanoidRootPart()
+        local livesFolder = workspace:FindFirstChild("Lives") or workspace:FindFirstChild("lives")
+        if not (hrp and livesFolder) then return nil, nil end
+
+        local closestNPC
+        local shortestDistance = maxDistance or math.huge
+
+        for _, npc in ipairs(livesFolder:GetChildren()) do
+            if npc.Name == "RegularNationNpc" or npc.Name == "RegulationNationNpc" then
+                local npcHRP = npc:FindFirstChild("HumanoidRootPart")
+                local npcHumanoid = npc:FindFirstChildOfClass("Humanoid")
+                if npcHRP and npcHumanoid and npcHumanoid.Health > 0 then
+                    local dist = (npcHRP.Position - hrp.Position).Magnitude
+                    if dist <= shortestDistance then
+                        shortestDistance = dist
+                        closestNPC = npc
+                    end
+                end
+            end
+        end
+
+        return closestNPC, hrp
+    end
 
     tabs.NPCs:AddToggle("AutoGripToggle", {
         Title = "Auto Grip NPCs",
@@ -56,42 +83,58 @@ if game.PlaceId == 96063223159256 then
         Description = "Grips nearest NPC at max speed"
     }):OnChanged(function(enabled)
         autoGripNPCsEnabled = enabled
-
-        if gripConnection then
-            gripConnection:Disconnect()
-            gripConnection = nil
-        end
-
         if enabled then
-            gripConnection = RunService.Heartbeat:Connect(function()
-                local hrp = getHumanoidRootPart()
-                local livesFolder = workspace:FindFirstChild("Lives")
-                if not (hrp and livesFolder) then return end
+            task.spawn(function()
+                while autoGripNPCsEnabled do
+                    local closestNPC, hrp = getClosestGripNPC(npcGripMaxDistance)
+                    local gripEvent = player.Character and player.Character:FindFirstChild("Scripts")
+                        and player.Character.Scripts:FindFirstChild("Server")
+                        and player.Character.Scripts.Server:FindFirstChild("Grip")
+                        and player.Character.Scripts.Server.Grip:FindFirstChild("Event")
 
-                local closestNPC
-                local shortestDistance = math.huge
-
-                for _, npc in ipairs(livesFolder:GetChildren()) do
-                    if npc.Name == "RegularNationNpc" then
-                        local npcHRP = npc:FindFirstChild("HumanoidRootPart")
-                        if npcHRP then
-                            local dist = (npcHRP.Position - hrp.Position).Magnitude
-                            if dist < shortestDistance then
-                                shortestDistance = dist
-                                closestNPC = npc
-                            end
+                    if closestNPC and hrp and gripEvent then
+                        local args = {"Kill", closestNPC, hrp.Position + Vector3.new(1, 2, 0)}
+                        for _ = 1, npcGripBurstCount do
+                            gripEvent:FireServer(unpack(args))
                         end
                     end
-                end
-
-                if closestNPC then
-                    local args = {"Kill", closestNPC, hrp.Position + Vector3.new(1,2,0)}
-                    for i = 1, 20 do
-                        player.Character.Scripts.Server.Grip.Event:FireServer(unpack(args))
-                    end
+                    task.wait(npcGripInterval)
                 end
             end)
         end
+    end)
+
+    tabs.NPCs:AddSlider("NpcGripIntervalSlider", {
+        Title = "NPC Grip Interval (s)",
+        Description = "Higher value = less lag and lower ping load",
+        Default = npcGripInterval,
+        Min = 0.05,
+        Max = 1,
+        Rounding = 2
+    }):OnChanged(function(value)
+        npcGripInterval = value
+    end)
+
+    tabs.NPCs:AddSlider("NpcGripBurstSlider", {
+        Title = "NPC Grip Burst",
+        Description = "How many grip fires per interval",
+        Default = npcGripBurstCount,
+        Min = 1,
+        Max = 6,
+        Rounding = 0
+    }):OnChanged(function(value)
+        npcGripBurstCount = value
+    end)
+
+    tabs.NPCs:AddSlider("NpcGripDistanceSlider", {
+        Title = "NPC Grip Max Distance",
+        Description = "Only grips NPCs within this distance",
+        Default = npcGripMaxDistance,
+        Min = 10,
+        Max = 150,
+        Rounding = 0
+    }):OnChanged(function(value)
+        npcGripMaxDistance = value
     end)
 
     -- Auto Grip Players
