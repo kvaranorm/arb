@@ -133,6 +133,164 @@ if game.PlaceId == 96063223159256 then
         end)
     end)
 
+        -- Hitbox Expander
+    local hitboxExpanderEnabled = false
+    local hitboxSizeStuds = 8
+    local hitboxColor = Color3.fromRGB(255, 0, 0)
+    local hitboxTransparency = 0.5
+    local hitboxPassthroughEnabled = true
+    local hitboxNonCollideableEnabled = true
+    local hitboxConnection
+    local expandedHitboxes = {}
+
+    local function removeHitbox(character)
+        local hitboxPart = expandedHitboxes[character]
+        if hitboxPart then
+            hitboxPart:Destroy()
+            expandedHitboxes[character] = nil
+        end
+    end
+
+    local function clearAllHitboxes()
+        for character in pairs(expandedHitboxes) do
+            removeHitbox(character)
+        end
+    end
+
+    local function updateHitboxProperties(hitboxPart)
+        hitboxPart.Size = Vector3.new(hitboxSizeStuds, hitboxSizeStuds, hitboxSizeStuds)
+        hitboxPart.Color = hitboxColor
+        hitboxPart.Transparency = hitboxTransparency
+        hitboxPart.CanCollide = not hitboxPassthroughEnabled
+        hitboxPart.CanTouch = not hitboxNonCollideableEnabled
+    end
+
+    local function getOrCreateHitboxForCharacter(targetCharacter)
+        local targetHRP = targetCharacter:FindFirstChild("HumanoidRootPart")
+        if not targetHRP then return end
+
+        local hitboxPart = expandedHitboxes[targetCharacter]
+        if not (hitboxPart and hitboxPart.Parent == targetCharacter) then
+            removeHitbox(targetCharacter)
+
+            hitboxPart = Instance.new("Part")
+            hitboxPart.Name = "ExpandedHitbox"
+            hitboxPart.Material = Enum.Material.ForceField
+            hitboxPart.Shape = Enum.PartType.Block
+            hitboxPart.Anchored = false
+            hitboxPart.Massless = true
+            hitboxPart.CanQuery = false
+
+            local weld = Instance.new("WeldConstraint")
+            weld.Part0 = hitboxPart
+            weld.Part1 = targetHRP
+            weld.Parent = hitboxPart
+
+            hitboxPart.CFrame = targetHRP.CFrame
+            hitboxPart.Parent = targetCharacter
+
+            expandedHitboxes[targetCharacter] = hitboxPart
+        end
+
+        updateHitboxProperties(hitboxPart)
+    end
+
+    local function setHitboxExpanderState(enabled)
+        hitboxExpanderEnabled = enabled
+
+        if hitboxConnection then
+            hitboxConnection:Disconnect()
+            hitboxConnection = nil
+        end
+
+        if not enabled then
+            clearAllHitboxes()
+            return
+        end
+
+        hitboxConnection = RunService.Heartbeat:Connect(function()
+            for _, targetPlayer in ipairs(Players:GetPlayers()) do
+                if targetPlayer ~= LocalPlayer and targetPlayer.Character then
+                    getOrCreateHitboxForCharacter(targetPlayer.Character)
+                end
+            end
+
+            for character in pairs(expandedHitboxes) do
+                if not character.Parent then
+                    removeHitbox(character)
+                end
+            end
+        end)
+    end
+
+    tabs.Players:AddToggle("HitboxExpanderToggle", {
+        Title = "Hitbox Expander",
+        Default = false,
+        Description = "Expands visible player hitboxes"
+    }):OnChanged(function(enabled)
+        setHitboxExpanderState(enabled)
+    end)
+
+    tabs.Players:AddSlider("HitboxSizeSlider", {
+        Title = "Hitbox Size (Studs)",
+        Description = "Changes expanded hitbox size",
+        Default = hitboxSizeStuds,
+        Min = 2,
+        Max = 25,
+        Rounding = 0
+    }):OnChanged(function(value)
+        hitboxSizeStuds = value
+        for _, hitboxPart in pairs(expandedHitboxes) do
+            updateHitboxProperties(hitboxPart)
+        end
+    end)
+
+    tabs.Players:AddColorpicker("HitboxColorPicker", {
+        Title = "Hitbox Color",
+        Default = hitboxColor
+    }):OnChanged(function(value)
+        hitboxColor = value
+        for _, hitboxPart in pairs(expandedHitboxes) do
+            updateHitboxProperties(hitboxPart)
+        end
+    end)
+
+    tabs.Players:AddSlider("HitboxTransparencySlider", {
+        Title = "Hitbox Transparency",
+        Description = "Changes expanded hitbox transparency",
+        Default = hitboxTransparency,
+        Min = 0,
+        Max = 1,
+        Rounding = 2
+    }):OnChanged(function(value)
+        hitboxTransparency = value
+        for _, hitboxPart in pairs(expandedHitboxes) do
+            updateHitboxProperties(hitboxPart)
+        end
+    end)
+
+    tabs.Players:AddToggle("HitboxPassthroughToggle", {
+        Title = "Hitbox Passthrough",
+        Default = hitboxPassthroughEnabled,
+        Description = "Lets players pass through the expanded hitbox"
+    }):OnChanged(function(value)
+        hitboxPassthroughEnabled = value
+        for _, hitboxPart in pairs(expandedHitboxes) do
+            updateHitboxProperties(hitboxPart)
+        end
+    end)
+
+    tabs.Players:AddToggle("HitboxNonCollideableToggle", {
+        Title = "Hitbox Non-Collideable",
+        Default = hitboxNonCollideableEnabled,
+        Description = "Disables touch collisions on expanded hitbox"
+    }):OnChanged(function(value)
+        hitboxNonCollideableEnabled = value
+        for _, hitboxPart in pairs(expandedHitboxes) do
+            updateHitboxProperties(hitboxPart)
+        end
+    end)
+
     -- Auto Meditate
     tabs.Meditation:AddToggle("AutoMeditateToggle", {
         Title = "Auto Meditate",
