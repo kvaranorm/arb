@@ -153,7 +153,7 @@ if game.PlaceId == 96063223159256 then
     local autoFarmBehindDistance = 0.5
     local autoFarmNpcDistance = 500
     local autoFarmTeleportInterval = 0.01
-    local autoFarmM1Interval = 0.45
+    local autoFarmM1Interval = 0.5
     local autoFarmComboHits = 4
 
     local function performM1()
