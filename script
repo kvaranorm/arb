@@ -49,8 +49,8 @@ if game.PlaceId == 96063223159256 then
     -- =======================
 
     local autoGripNPCsEnabled = false
-    local npcGripInterval = 0.18
-    local npcGripBurstCount = 2
+    local npcGripInterval = 0.001
+    local npcGripBurstCount = 6
     local npcGripMaxDistance = 45
 
     local function getClosestGripNPC(maxDistance)
@@ -116,7 +116,7 @@ if game.PlaceId == 96063223159256 then
         Title = "NPC Grip Interval (s)",
         Description = "Higher value = less lag and lower ping load",
         Default = npcGripInterval,
-        Min = 0.05,
+        Min = 0.01,
         Max = 1,
         Rounding = 2
     }):OnChanged(function(value)
@@ -150,8 +150,8 @@ if game.PlaceId == 96063223159256 then
     -- =======================
 
     local autoFarmEnabled = false
-    local autoFarmBehindDistance = 2.8
-    local autoFarmNpcDistance = 55
+    local autoFarmBehindDistance = 0.5
+    local autoFarmNpcDistance = 500
     local autoFarmTeleportInterval = 0.2
     local autoFarmM1Interval = 0.5
 
@@ -175,7 +175,7 @@ if game.PlaceId == 96063223159256 then
     tabs.AutoFarm:AddToggle("AutoFarmToggle", {
         Title = "Auto Farm",
         Default = false,
-        Description = "TP behind NPC, do 16 M1s, then auto grip for 6s"
+        Description = "Money Auto Farm (Must Be Chi)"
     }):OnChanged(function(enabled)
         autoFarmEnabled = enabled
 
@@ -237,7 +237,7 @@ if game.PlaceId == 96063223159256 then
         Description = "Target NPC range for auto farm",
         Default = autoFarmNpcDistance,
         Min = 10,
-        Max = 150,
+        Max = 1000,
         Rounding = 0
     }):OnChanged(function(value)
         autoFarmNpcDistance = value
@@ -247,8 +247,8 @@ if game.PlaceId == 96063223159256 then
         Title = "Behind Distance",
         Description = "How far behind NPC to teleport",
         Default = autoFarmBehindDistance,
-        Min = 1,
-        Max = 8,
+        Min = 0.1,
+        Max = 3,
         Rounding = 1
     }):OnChanged(function(value)
         autoFarmBehindDistance = value
