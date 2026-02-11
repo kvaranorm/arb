@@ -49,8 +49,8 @@ if game.PlaceId == 96063223159256 then
     -- =======================
 
     local autoGripNPCsEnabled = false
-    local npcGripInterval = 0.18
-    local npcGripBurstCount = 2
+    local npcGripInterval = 0.01
+    local npcGripBurstCount = 6
     local npcGripMaxDistance = 45
 
     local function getClosestGripNPC(maxDistance)
@@ -116,7 +116,7 @@ if game.PlaceId == 96063223159256 then
         Title = "NPC Grip Interval (s)",
         Description = "Higher value = less lag and lower ping load",
         Default = npcGripInterval,
-        Min = 0.05,
+        Min = 0.01,
         Max = 1,
         Rounding = 2
     }):OnChanged(function(value)
