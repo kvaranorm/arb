@@ -150,8 +150,8 @@ if game.PlaceId == 96063223159256 then
     -- =======================
 
     local autoFarmEnabled = false
-    local autoFarmBehindDistance = 2.8
-    local autoFarmNpcDistance = 55
+    local autoFarmBehindDistance = 1
+    local autoFarmNpcDistance = 500
     local autoFarmTeleportInterval = 0.2
     local autoFarmM1Interval = 0.5
 
@@ -237,7 +237,7 @@ if game.PlaceId == 96063223159256 then
         Description = "Target NPC range for auto farm",
         Default = autoFarmNpcDistance,
         Min = 10,
-        Max = 150,
+        Max = 500,
         Rounding = 0
     }):OnChanged(function(value)
         autoFarmNpcDistance = value
