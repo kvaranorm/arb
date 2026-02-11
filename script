@@ -152,9 +152,8 @@ if game.PlaceId == 96063223159256 then
     local autoFarmEnabled = false
     local autoFarmBehindDistance = 1
     local autoFarmNpcDistance = 500
-    local autoFarmTeleportInterval = 0.1
-    local autoFarmAttackWindowDuration = 0.5
-    local autoFarmM1Interval = autoFarmAttackWindowDuration / 4
+    local autoFarmTeleportInterval = 0.2
+    local autoFarmM1Interval = 0.5
 
     local function performM1()
         local vim = game:GetService("VirtualInputManager")
@@ -192,11 +191,10 @@ if game.PlaceId == 96063223159256 then
                         else
                             local performedInWindow = 0
                             local attackWindowStart = tick()
-                            local attackWindowEnd = attackWindowStart + autoFarmAttackWindowDuration
                             local nextTeleportAt = attackWindowStart
-                            local nextM1At = attackWindowStart + autoFarmM1Interval
+                            local nextM1At = attackWindowStart
 
-                            while autoFarmEnabled and m1Count < 16 and tick() <= attackWindowEnd do
+                            while autoFarmEnabled and m1Count < 16 and performedInWindow < 4 and (tick() - attackWindowStart) < 2 do
                                 local now = tick()
 
                                 if now >= nextTeleportAt then
@@ -204,7 +202,7 @@ if game.PlaceId == 96063223159256 then
                                     nextTeleportAt = nextTeleportAt + autoFarmTeleportInterval
                                 end
 
-                                if performedInWindow < 4 and now >= nextM1At then
+                                if now >= nextM1At then
                                     if teleportBehindNPC(targetNPC) then
                                         performM1()
                                         m1Count = m1Count + 1
