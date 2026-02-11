@@ -153,8 +153,9 @@ if game.PlaceId == 96063223159256 then
     local autoFarmBehindDistance = 0.5
     local autoFarmNpcDistance = 500
     local autoFarmTeleportInterval = 0.01
-    local autoFarmM1Interval = 0.5
+    local autoFarmM1Interval = 0.45
     local autoFarmComboHits = 4
+    local autoFarmBetweenComboTeleportDuration = 5
 
     local function performM1()
         local vim = game:GetService("VirtualInputManager")
@@ -171,6 +172,26 @@ if game.PlaceId == 96063223159256 then
         local targetPos = npcHRP.Position + behindOffset
         myHRP.CFrame = CFrame.new(targetPos, npcHRP.Position)
         return true
+    end
+
+    local function keepTeleportingBehindTarget(initialTarget, durationSeconds)
+        local targetNPC = initialTarget
+        local endAt = tick() + durationSeconds
+
+        while autoFarmEnabled and tick() < endAt do
+            local nearestNPC = getClosestGripNPC(autoFarmNpcDistance)
+            if nearestNPC then
+                targetNPC = nearestNPC
+            end
+
+            if targetNPC then
+                teleportBehindNPC(targetNPC)
+            end
+
+            task.wait(autoFarmTeleportInterval)
+        end
+
+        return targetNPC
     end
 
     tabs.AutoFarm:AddToggle("AutoFarmToggle", {
@@ -193,32 +214,35 @@ if game.PlaceId == 96063223159256 then
                             local performedInWindow = 0
 
                             while autoFarmEnabled and m1Count < 16 and performedInWindow < autoFarmComboHits do
-                                local nearestNPC = getClosestGripNPC(autoFarmNpcDistance)
-                                if nearestNPC then
-                                    targetNPC = nearestNPC
-                                end
+                                local hitFired = false
+                                local hitDeadline = tick() + 1.5
 
-                                if not (targetNPC and teleportBehindNPC(targetNPC)) then
-                                    task.wait(0.03)
-                                else
-                                    performM1()
-                                    m1Count = m1Count + 1
-                                    performedInWindow = performedInWindow + 1
+                                while autoFarmEnabled and not hitFired and tick() < hitDeadline do
+                                    local nearestNPC = getClosestGripNPC(autoFarmNpcDistance)
+                                    if nearestNPC then
+                                        targetNPC = nearestNPC
+                                    end
 
-                                    local teleportEndAt = tick() + autoFarmM1Interval
-                                    while autoFarmEnabled and tick() < teleportEndAt do
-                                        local refreshNPC = getClosestGripNPC(autoFarmNpcDistance)
-                                        if refreshNPC then
-                                            targetNPC = refreshNPC
-                                            teleportBehindNPC(targetNPC)
-                                        end
-                                        task.wait(autoFarmTeleportInterval)
+                                    if targetNPC then
+                                        teleportBehindNPC(targetNPC)
+                                        performM1()
+                                        m1Count = m1Count + 1
+                                        performedInWindow = performedInWindow + 1
+                                        hitFired = true
+                                    else
+                                        task.wait(0.03)
                                     end
                                 end
+
+                                if not hitFired then
+                                    break
+                                end
+
+                                targetNPC = keepTeleportingBehindTarget(targetNPC, autoFarmM1Interval)
                             end
 
                             if autoFarmEnabled and m1Count < 16 then
-                                task.wait(2)
+                                targetNPC = keepTeleportingBehindTarget(targetNPC, autoFarmBetweenComboTeleportDuration)
                             end
                         end
                     end
