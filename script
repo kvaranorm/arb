@@ -153,7 +153,8 @@ if game.PlaceId == 96063223159256 then
     local autoFarmBehindDistance = 0.5
     local autoFarmNpcDistance = 500
     local autoFarmTeleportInterval = 0.01
-    local autoFarmM1Interval = 0.5
+    local autoFarmM1Interval = 0.45
+    local autoFarmComboHits = 4
 
     local function performM1()
         local vim = game:GetService("VirtualInputManager")
@@ -190,33 +191,30 @@ if game.PlaceId == 96063223159256 then
                             task.wait(0.2)
                         else
                             local performedInWindow = 0
-                            local attackWindowStart = tick()
-                            local nextTeleportAt = attackWindowStart
-                            local nextM1At = attackWindowStart
 
-                            while autoFarmEnabled and m1Count < 16 and performedInWindow < 4 and (tick() - attackWindowStart) < 2 do
-                                local now = tick()
+                            while autoFarmEnabled and m1Count < 16 and performedInWindow < autoFarmComboHits do
                                 local nearestNPC = getClosestGripNPC(autoFarmNpcDistance)
-
                                 if nearestNPC then
                                     targetNPC = nearestNPC
                                 end
 
-                                if now >= nextTeleportAt and targetNPC then
-                                    teleportBehindNPC(targetNPC)
-                                    nextTeleportAt = nextTeleportAt + autoFarmTeleportInterval
-                                end
+                                if not (targetNPC and teleportBehindNPC(targetNPC)) then
+                                    task.wait(0.03)
+                                else
+                                    performM1()
+                                    m1Count = m1Count + 1
+                                    performedInWindow = performedInWindow + 1
 
-                                if now >= nextM1At and targetNPC then
-                                    if teleportBehindNPC(targetNPC) then
-                                        performM1()
-                                        m1Count = m1Count + 1
-                                        performedInWindow = performedInWindow + 1
+                                    local teleportEndAt = tick() + autoFarmM1Interval
+                                    while autoFarmEnabled and tick() < teleportEndAt do
+                                        local refreshNPC = getClosestGripNPC(autoFarmNpcDistance)
+                                        if refreshNPC then
+                                            targetNPC = refreshNPC
+                                            teleportBehindNPC(targetNPC)
+                                        end
+                                        task.wait(autoFarmTeleportInterval)
                                     end
-                                    nextM1At = nextM1At + autoFarmM1Interval
                                 end
-
-                                task.wait()
                             end
 
                             if autoFarmEnabled and m1Count < 16 then
